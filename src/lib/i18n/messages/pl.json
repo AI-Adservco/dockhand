@@ -1516,11 +1516,91 @@
 	"batchop_operation_pause": "wstrzymania",
 	"batchop_operation_unpause": "wznowienia",
 	"batchop_operation_down": "wyłączenia",
-	"batchop_count_containers": "{count} kontenerów",
-	"batchop_count_images": "{count} obrazów",
-	"batchop_count_volumes": "{count} wolumenów",
-	"batchop_count_networks": "{count} sieci",
-	"batchop_count_stacks": "{count} stacków",
+	"batchop_count_containers": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} kontener",
+				"countPlural=few": "{count} kontenery",
+				"countPlural=many": "{count} kontenerów",
+				"countPlural=other": "{count} kontenerów"
+			}
+		}
+	],
+	"batchop_count_images": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} obraz",
+				"countPlural=few": "{count} obrazy",
+				"countPlural=many": "{count} obrazów",
+				"countPlural=other": "{count} obrazów"
+			}
+		}
+	],
+	"batchop_count_volumes": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} wolumen",
+				"countPlural=few": "{count} wolumeny",
+				"countPlural=many": "{count} wolumenów",
+				"countPlural=other": "{count} wolumenów"
+			}
+		}
+	],
+	"batchop_count_networks": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} sieć",
+				"countPlural=few": "{count} sieci",
+				"countPlural=many": "{count} sieci",
+				"countPlural=other": "{count} sieci"
+			}
+		}
+	],
+	"batchop_count_stacks": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} stack",
+				"countPlural=few": "{count} stacki",
+				"countPlural=many": "{count} stacków",
+				"countPlural=other": "{count} stacków"
+			}
+		}
+	],
 	"batchop_processing": "Przetwarzanie: {items}...",
 	"batchop_preparing": "Przygotowanie do {operation}: {items}...",
 	"batchop_completed": "Zakończono: {count} udanych",
@@ -1635,11 +1715,11 @@
 	"cron_on": "w",
 	"cron_monday": "poniedziałek",
 	"cron_tuesday": "wtorek",
-	"cron_wednesday": "środę",
+	"cron_wednesday": "środa",
 	"cron_thursday": "czwartek",
 	"cron_friday": "piątek",
-	"cron_saturday": "sobotę",
-	"cron_sunday": "niedzielę",
+	"cron_saturday": "sobota",
+	"cron_sunday": "niedziela",
 	"backupui_no_volumes_detected": "Nie wykryto wolumenów",
 	"backupui_backup_all_volumes": "Backup wszystkich wolumenów ({count})",
 	"backupui_bind_mounts_detected": [
@@ -1792,5 +1872,415 @@
 			}
 		}
 	],
-	"snapshotdialog_error_reported": "Narzędzie kopii zapasowych zgłosiło:"
+	"snapshotdialog_error_reported": "Narzędzie kopii zapasowych zgłosiło:",
+	"time_in_future": "w przyszłości",
+	"time_just_now": "właśnie teraz",
+	"time_minutes_ago": "{count} min temu",
+	"time_hours_ago": "{count} godz. temu",
+	"time_days_ago": "{count} dni temu",
+	"time_months_ago": "{count} mies. temu",
+	"time_years_ago": "{count} lat temu",
+	"duration_less_than_second": "Mniej niż sekunda",
+	"duration_about_minute": "Około minuty",
+	"duration_about_hour": "Około godziny",
+	"duration_seconds": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} sekunda",
+				"countPlural=few": "{count} sekundy",
+				"countPlural=many": "{count} sekund",
+				"countPlural=other": "{count} sekund"
+			}
+		}
+	],
+	"duration_minutes": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} minuta",
+				"countPlural=few": "{count} minuty",
+				"countPlural=many": "{count} minut",
+				"countPlural=other": "{count} minut"
+			}
+		}
+	],
+	"duration_hours": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} godzina",
+				"countPlural=few": "{count} godziny",
+				"countPlural=many": "{count} godzin",
+				"countPlural=other": "{count} godzin"
+			}
+		}
+	],
+	"duration_days": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} dzień",
+				"countPlural=few": "{count} dni",
+				"countPlural=many": "{count} dni",
+				"countPlural=other": "{count} dni"
+			}
+		}
+	],
+	"duration_weeks": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} tydzień",
+				"countPlural=few": "{count} tygodnie",
+				"countPlural=many": "{count} tygodni",
+				"countPlural=other": "{count} tygodni"
+			}
+		}
+	],
+	"duration_months": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} miesiąc",
+				"countPlural=few": "{count} miesiące",
+				"countPlural=many": "{count} miesięcy",
+				"countPlural=other": "{count} miesięcy"
+			}
+		}
+	],
+	"duration_years": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} rok",
+				"countPlural=few": "{count} lata",
+				"countPlural=many": "{count} lat",
+				"countPlural=other": "{count} lat"
+			}
+		}
+	],
+	"duration_ago_less_than_second": "Mniej niż sekundę temu",
+	"duration_ago_about_minute": "Około minuty temu",
+	"duration_ago_about_hour": "Około godziny temu",
+	"duration_ago_seconds": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} sekundę temu",
+				"countPlural=few": "{count} sekundy temu",
+				"countPlural=many": "{count} sekund temu",
+				"countPlural=other": "{count} sekund temu"
+			}
+		}
+	],
+	"duration_ago_minutes": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} minutę temu",
+				"countPlural=few": "{count} minuty temu",
+				"countPlural=many": "{count} minut temu",
+				"countPlural=other": "{count} minut temu"
+			}
+		}
+	],
+	"duration_ago_hours": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} godzinę temu",
+				"countPlural=few": "{count} godziny temu",
+				"countPlural=many": "{count} godzin temu",
+				"countPlural=other": "{count} godzin temu"
+			}
+		}
+	],
+	"duration_ago_days": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} dzień temu",
+				"countPlural=few": "{count} dni temu",
+				"countPlural=many": "{count} dni temu",
+				"countPlural=other": "{count} dni temu"
+			}
+		}
+	],
+	"duration_ago_weeks": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} tydzień temu",
+				"countPlural=few": "{count} tygodnie temu",
+				"countPlural=many": "{count} tygodni temu",
+				"countPlural=other": "{count} tygodni temu"
+			}
+		}
+	],
+	"duration_ago_months": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} miesiąc temu",
+				"countPlural=few": "{count} miesiące temu",
+				"countPlural=many": "{count} miesięcy temu",
+				"countPlural=other": "{count} miesięcy temu"
+			}
+		}
+	],
+	"duration_ago_years": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} rok temu",
+				"countPlural=few": "{count} lata temu",
+				"countPlural=many": "{count} lat temu",
+				"countPlural=other": "{count} lat temu"
+			}
+		}
+	],
+	"licence_expired": "Licencja wygasła",
+	"licence_expires_minutes": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Licencja wygasa za {count} minutę",
+				"countPlural=few": "Licencja wygasa za {count} minuty",
+				"countPlural=many": "Licencja wygasa za {count} minut",
+				"countPlural=other": "Licencja wygasa za {count} minut"
+			}
+		}
+	],
+	"licence_expires_hours": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Licencja wygasa za {count} godzinę",
+				"countPlural=few": "Licencja wygasa za {count} godziny",
+				"countPlural=many": "Licencja wygasa za {count} godzin",
+				"countPlural=other": "Licencja wygasa za {count} godzin"
+			}
+		}
+	],
+	"licence_expires_tomorrow": "Licencja wygasa jutro",
+	"licence_expires_days": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Licencja wygasa za {count} dzień",
+				"countPlural=few": "Licencja wygasa za {count} dni",
+				"countPlural=many": "Licencja wygasa za {count} dni",
+				"countPlural=other": "Licencja wygasa za {count} dni"
+			}
+		}
+	],
+	"licence_problem": "Problem z licencją: {problem}",
+	"licence_not_valid": "Licencja jest nieprawidłowa",
+	"licence_hold": "Ta instancja wymaga odnowienia licencji. Do tego czasu zmiany mogą wprowadzać tylko administratorzy, dlatego strony wyglądają na puste.",
+	"updatesteps_step_pulling": "Pobieranie obrazu",
+	"updatesteps_step_scanning": "Skanowanie w poszukiwaniu luk",
+	"updatesteps_step_stopping": "Zatrzymywanie",
+	"updatesteps_step_removing": "Usuwanie",
+	"updatesteps_step_creating": "Tworzenie",
+	"updatesteps_step_starting": "Uruchamianie",
+	"updatesteps_step_done": "Gotowe",
+	"updatesteps_step_updated": "Zaktualizowany",
+	"updatesteps_step_failed": "Niepowodzenie",
+	"updatesteps_step_blocked": "Zablokowany przez luki",
+	"updatesteps_step_checked": "Sprawdzony",
+	"updatesteps_step_skipped": "Aktualny",
+	"updatesteps_criteria_title_never": "Bez blokowania przez luki",
+	"updatesteps_criteria_title_any": "Blokuj przy każdej luce",
+	"updatesteps_criteria_title_critical_high": "Blokuj przy krytycznych lub wysokich",
+	"updatesteps_criteria_title_critical": "Blokuj tylko przy krytycznych",
+	"updatesteps_criteria_title_more_than_current": "Blokuj, gdy więcej niż w obecnym obrazie",
+	"shell_user_container_default": "Domyślny użytkownik kontenera",
+	"containersstore_label_on": "wł.",
+	"containersstore_label_daily": "codziennie",
+	"containersstore_day_sun": "nd",
+	"containersstore_day_mon": "pn",
+	"containersstore_day_tue": "wt",
+	"containersstore_day_wed": "śr",
+	"containersstore_day_thu": "cz",
+	"containersstore_day_fri": "pt",
+	"containersstore_day_sat": "sb",
+	"containersstore_tooltip_daily": "Codziennie o {time}",
+	"containersstore_tooltip_weekly": "Co tydzień, {day}, o {time}",
+	"containersstore_load_failed": "Nie udało się wczytać kontenerów",
+	"auth_network_error": "Błąd sieci",
+	"gridcol_name": "Nazwa",
+	"gridcol_image": "Obraz",
+	"gridcol_state": "Stan",
+	"gridcol_health": "Kondycja",
+	"gridcol_uptime": "Czas działania",
+	"gridcol_restarts": "Restarty",
+	"gridcol_cpu": "CPU",
+	"gridcol_memory": "RAM",
+	"gridcol_net_io": "Sieć we/wy",
+	"gridcol_disk_io": "Dysk we/wy",
+	"gridcol_ip": "IP",
+	"gridcol_ports": "Porty",
+	"gridcol_auto_update": "Autoaktualizacja",
+	"gridcol_stack": "Stack",
+	"gridcol_tags": "Tagi",
+	"gridcol_size": "Rozmiar",
+	"gridcol_updated": "Zaktualizowano",
+	"gridcol_tag": "Tag",
+	"gridcol_id": "ID",
+	"gridcol_created": "Utworzono",
+	"gridcol_used_by": "Używany przez",
+	"gridcol_driver": "Sterownik",
+	"gridcol_scope": "Zakres",
+	"gridcol_subnet": "Podsieć",
+	"gridcol_gateway": "Brama",
+	"gridcol_containers": "Kontenery",
+	"gridcol_status": "Status",
+	"gridcol_source": "Źródło",
+	"gridcol_webhook": "Webhook",
+	"gridcol_location": "Lokalizacja",
+	"gridcol_networks": "Sieci",
+	"gridcol_volumes": "Wolumeny",
+	"gridcol_type": "Typ",
+	"gridcol_timestamp": "Czas",
+	"gridcol_environment": "Środowisko",
+	"gridcol_action": "Akcja",
+	"gridcol_container": "Kontener",
+	"gridcol_exit": "Kod wyjścia",
+	"gridcol_user": "Użytkownik",
+	"gridcol_entity": "Obiekt",
+	"gridcol_ip_address": "Adres IP",
+	"gridcol_schedule": "Harmonogram",
+	"gridcol_last_run": "Ostatnie uruchomienie",
+	"gridcol_next_run": "Następne uruchomienie",
+	"gridcol_connection": "Połączenie",
+	"gridcol_host": "Host",
+	"gridcol_updates": "Aktualizacje",
+	"gridcol_images": "Obrazy",
+	"gridcol_stacks": "Stacki",
+	"gridcol_events": "Zdarzenia",
+	"gridcol_labels": "Etykiety",
+	"gridcol_repository": "Repozytorium",
+	"gridcol_snapshots": "Snapshoty",
+	"gridcol_last_backup": "Ostatni backup",
+	"gridcol_retention": "Retencja",
+	"gridcol_latest": "Najnowszy",
+	"gridcol_usage": "Użycie",
+	"gridcol_stats": "Statystyki",
+	"gridcol_cve": "CVE",
+	"gridcol_package": "Pakiet",
+	"gridcol_severity": "Istotność",
+	"gridcol_installed_version": "Zainstalowana wersja",
+	"gridcol_fixed_version": "Naprawiono w",
+	"gridcol_scanned": "Przeskanowano",
+	"gridcol_when": "Kiedy",
+	"gridcol_duration": "Czas trwania",
+	"gridcol_trigger": "Wyzwalacz",
+	"gridcol_summary": "Podsumowanie",
+	"gridcol_hint_stack_webhook": "Identyfikator i adres webhooka git-stacka (do podłączenia Gitei/GitHuba/GitLaba)",
+	"gridcol_hint_backup_type": "Backup kontenera albo stacka",
+	"gridcol_hint_backup_repository": "Cel backupu (S3, REST, lokalny itp.)",
+	"gridcol_hint_last_backup_status": "Status ostatniego backupu"
 }
