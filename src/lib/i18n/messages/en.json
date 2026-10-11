@@ -2716,7 +2716,21 @@
 	"stacks_git_initializing": "Initializing...",
 	"stacks_import_unknown_environment": "Unknown",
 	"stacks_import_scan_failed": "Failed to scan directory",
-	"stacks_import_all_already_adopted": "All {count} stack(s) in this directory are already adopted",
+	"stacks_import_all_already_adopted": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "The {count} stack in this directory is already adopted",
+				"countPlural=other": "All {count} stacks in this directory are already adopted"
+			}
+		}
+	],
 	"stacks_import_none_found": "No compose stacks found in this directory",
 	"stacks_import_no_environment": "No environment selected",
 	"stacks_import_adopt_stack_failed": "Failed to adopt stack",
@@ -2724,14 +2738,57 @@
 	"stacks_import_failed_with_error": "Failed: {error}",
 	"stacks_import_adopt_failed": "Failed to adopt",
 	"stacks_import_adopt_stacks_failed": "Failed to adopt stacks",
-	"stacks_import_adopted_count": "Adopted {count} stack(s)",
-	"stacks_import_adopt_count_failed": "Failed to adopt {count} stack(s)",
+	"stacks_import_adopted_count": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Adopted {count} stack",
+				"countPlural=other": "Adopted {count} stacks"
+			}
+		}
+	],
+	"stacks_import_adopt_count_failed": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Failed to adopt {count} stack",
+				"countPlural=other": "Failed to adopt {count} stacks"
+			}
+		}
+	],
 	"stacks_import_browser_title_env": "Adopt stacks to {env}",
 	"stacks_import_browser_title": "Adopt stacks",
 	"stacks_import_browser_description_remote": "Browse the Dockhand host filesystem to find compose files. Files are managed locally — Hawser only proxies Docker API calls, not filesystem access.",
 	"stacks_import_browser_description": "Browse to a compose file or scan a directory for stacks.",
 	"stacks_import_results_title": "Select stacks to adopt to",
-	"stacks_import_results_description": "{count} stack(s) found. Select which ones to adopt into {env}.",
+	"stacks_import_results_description": [
+		{
+			"declarations": [
+				"input count",
+				"input env",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} stack found. Select whether to adopt it into {env}.",
+				"countPlural=other": "{count} stacks found. Select which ones to adopt into {env}."
+			}
+		}
+	],
 	"stacks_import_service_count": [
 		{
 			"declarations": [
@@ -2760,7 +2817,21 @@
 	"stacks_import_back": "Back",
 	"stacks_import_cancel": "Cancel",
 	"stacks_import_adopting": "Adopting...",
-	"stacks_import_adopt_count": "Adopt {count} stack(s)",
+	"stacks_import_adopt_count": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Adopt {count} stack",
+				"countPlural=other": "Adopt {count} stacks"
+			}
+		}
+	],
 	"stacks_import_preview_title": "Adopt this stack?",
 	"stacks_import_preview_description": "Review the compose file before adopting.",
 	"stacks_import_preview_stack_label": "Stack:",
