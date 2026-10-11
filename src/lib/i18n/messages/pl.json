@@ -1186,6 +1186,181 @@
 	"containers_files_chown_hint": "Użytkownik albo użytkownik:grupa. Identyfikatory liczbowe działają nawet wtedy, gdy nazwy nie ma w kontenerze.",
 	"containers_files_browse_title": "Przeglądaj pliki",
 	"containers_files_modal_description": "Przeglądaj, wysyłaj i pobieraj pliki z systemu plików kontenera.",
+	"containers_snapshot_no_metadata": "Brak metadanych",
+	"containers_snapshot_error_load_metadata": "Nie udało się wczytać metadanych",
+	"containers_snapshot_browse_verb": "Przeglądaj snapshot",
+	"containers_snapshot_browse_description": "Przeglądaj pliki w snapshocie {id}.",
+	"containers_snapshot_tab_files": "Pliki",
+	"containers_snapshot_tab_metadata": "Metadane",
+	"containers_snapshot_loading_metadata": "Wczytywanie metadanych...",
+	"containers_snapshot_backup_info": "Informacje o backupie",
+	"containers_snapshot_type": "Typ",
+	"containers_snapshot_name": "Nazwa",
+	"containers_snapshot_backup_time": "Czas backupu",
+	"containers_snapshot_environment_id": "ID środowiska",
+	"containers_snapshot_compose_file": "Plik compose",
+	"containers_snapshot_stack_files": "Pliki stacka",
+	"containers_snapshot_captured": "zapisane",
+	"containers_snapshot_not_captured": "niezapisane",
+	"containers_snapshot_volumes_binds": "Wolumeny i bindy ({count})",
+	"containers_snapshot_stack_files_count": "Pliki stacka ({count})",
+	"containers_snapshot_secrets_count": "Sekrety ({count})",
+	"containers_snapshot_secrets_hint": "Przechowywane w postaci zaszyfrowanej kluczem tej instancji. Przywracane do stacka przy odtwarzaniu (wartości nigdy nie są pokazywane).",
+	"containers_snapshot_image": "Obraz",
+	"containers_snapshot_container_id": "ID kontenera",
+	"containers_snapshot_state_at_backup": "Stan przy backupie",
+	"containers_snapshot_created": "Utworzono",
+	"containers_snapshot_command": "Polecenie",
+	"containers_snapshot_entrypoint": "Entrypoint",
+	"containers_snapshot_working_dir": "Katalog roboczy",
+	"containers_snapshot_user": "Użytkownik",
+	"containers_snapshot_exposed_ports": "Udostępnione porty",
+	"containers_snapshot_restart_policy": "Zasada restartu",
+	"containers_snapshot_restart_max_retries": "(maks. {count})",
+	"containers_snapshot_network_mode": "Tryb sieci",
+	"containers_snapshot_privileged": "Uprzywilejowany",
+	"containers_snapshot_yes": "tak",
+	"containers_snapshot_port_bindings": "Mapowania portów",
+	"containers_snapshot_health_at_backup": "Kondycja przy backupie",
+	"containers_snapshot_security": "Bezpieczeństwo",
+	"containers_snapshot_badge_privileged": "uprzywilejowany",
+	"containers_snapshot_badge_readonly_rootfs": "rootfs tylko do odczytu",
+	"containers_snapshot_runtime": "Runtime",
+	"containers_snapshot_log_driver": "Sterownik logów",
+	"containers_snapshot_stop_signal": "Sygnał zatrzymania",
+	"containers_snapshot_platform": "Platforma",
+	"containers_snapshot_dns_hosts": "DNS i hosty",
+	"containers_snapshot_labels_count": "Etykiety ({count})",
+	"containers_snapshot_env_vars_count": "Zmienne środowiskowe ({count})",
+	"containers_snapshot_no_metadata_for_snapshot": "Brak metadanych dla tego snapshotu",
+	"containers_snapshot_error_load": "Nie udało się wczytać snapshotów",
+	"containers_snapshot_compare_same_repo": "Porównanie wymaga dwóch snapshotów z tego samego repozytorium",
+	"containers_snapshot_deleted": "Snapshot usunięty",
+	"containers_snapshot_error_delete": "Nie udało się usunąć snapshotu",
+	"containers_snapshot_refresh": "Odśwież snapshoty",
+	"containers_snapshot_loading_progress": "Wczytywanie snapshotów... {done} z {total} repozytoriów",
+	"containers_snapshot_loading": "Wczytywanie snapshotów...",
+	"containers_snapshot_empty": "Brak snapshotów dla {name}.",
+	"containers_snapshot_empty_hint": "Uruchom backup z karty Harmonogramy, aby go utworzyć.",
+	"containers_snapshot_all_repositories": "Wszystkie repozytoria",
+	"containers_snapshot_delete_selected": "Usuń wybrane ({count})",
+	"containers_snapshot_clear_selection": "Wyczyść",
+	"containers_snapshot_delete_all": "Usuń wszystkie ({count})",
+	"containers_snapshot_select_all": "Zaznacz wszystkie snapshoty",
+	"containers_snapshot_col_snapshot": "Snapshot",
+	"containers_snapshot_col_taken": "Wykonano",
+	"containers_snapshot_col_added": "Dodano",
+	"containers_snapshot_col_repository": "Repozytorium",
+	"containers_snapshot_col_actions": "Akcje",
+	"containers_snapshot_select": "Zaznacz snapshot {id}",
+	"containers_snapshot_stats_title": "{filesNew} nowych, {filesChanged} zmienionych plików",
+	"containers_snapshot_compare_cancel": "Anuluj porównanie",
+	"containers_snapshot_compare_with_selected": "Porównaj z wybranym",
+	"containers_snapshot_compare": "Porównaj",
+	"containers_snapshot_browse_files": "Przeglądaj pliki",
+	"containers_snapshot_restore": "Przywróć",
+	"containers_snapshot_delete_title": "Usuń snapshot",
+	"containers_backup_cancel_failed": "Nie udało się anulować backupu",
+	"containers_backup_select_repository": "Wybierz repozytorium backupu",
+	"containers_backup_schedule_invalid": "Harmonogram jest nieprawidłowy",
+	"containers_backup_failed": "Backup nie powiódł się",
+	"containers_backup_schedule_added": "Harmonogram backupu dodany",
+	"containers_backup_schedule_updated": "Harmonogram backupu zaktualizowany",
+	"containers_backup_completed_for": "Backup zakończony dla {name}",
+	"containers_backup_schedule_removed": "Harmonogram backupu usunięty",
+	"containers_backup_schedule_removed_with_snapshots": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Harmonogram backupu usunięty (usunięto {count} snapshot)",
+				"countPlural=few": "Harmonogram backupu usunięty (usunięto {count} snapshoty)",
+				"countPlural=many": "Harmonogram backupu usunięty (usunięto {count} snapshotów)",
+				"countPlural=other": "Harmonogram backupu usunięty (usunięto {count} snapshotów)"
+			}
+		}
+	],
+	"containers_backup_delete_failed": "Nie udało się usunąć",
+	"containers_backup_schedule_paused": "Harmonogram wstrzymany",
+	"containers_backup_schedule_resumed": "Harmonogram wznowiony",
+	"containers_backup_schedule_update_failed": "Nie udało się zaktualizować harmonogramu",
+	"containers_backup_skipped": "Backup pominięty",
+	"containers_backup_completed_with_warnings": "Backup zakończony z ostrzeżeniami",
+	"containers_backup_start_failed": "Nie udało się uruchomić backupu",
+	"containers_backup_all_volumes": "Wszystkie wolumeny ({count})",
+	"containers_backup_volumes_selected": "{selected} z {total} wolumenów",
+	"containers_backup_probe_failed": "sonda nie powiodła się",
+	"containers_backup_tab_snapshots": "Snapshoty",
+	"containers_backup_tab_history": "Historia",
+	"containers_backup_unknown_destination": "Nieznany",
+	"containers_backup_paused": "Wstrzymany",
+	"containers_backup_manual": "Ręczny",
+	"containers_backup_pause_schedule": "Wstrzymaj harmonogram",
+	"containers_backup_resume_schedule": "Wznów harmonogram",
+	"containers_backup_run_now": "Uruchom teraz",
+	"containers_backup_edit": "Edytuj",
+	"containers_backup_duplicate": "Duplikuj",
+	"containers_backup_delete_title_with_snapshots": "Snapshoty również zostaną usunięte.",
+	"containers_backup_delete_title_keep_snapshots": "Usuń harmonogram (snapshoty zostaną zachowane)",
+	"containers_backup_also_delete_snapshots": "Usuń również snapshoty",
+	"containers_backup_also_delete_config_snapshots": "Usuń również snapshoty tej konfiguracji",
+	"containers_backup_no_schedules_container": "Dla tego kontenera nie skonfigurowano harmonogramów backupu.",
+	"containers_backup_no_schedules_stack": "Dla tego stacka nie skonfigurowano harmonogramów backupu.",
+	"containers_backup_new_schedule": "Nowy harmonogram backupu",
+	"containers_backup_edit_schedule": "Edytuj harmonogram",
+	"containers_backup_enabled": "Włączony",
+	"containers_backup_stop_container_during": "Zatrzymaj kontener na czas backupu",
+	"containers_backup_stop_stack_during": "Zatrzymaj stack na czas backupu",
+	"containers_backup_no_volumes_container": "Nie wykryto wolumenów w tym kontenerze",
+	"containers_backup_no_volumes_stack": "Nie wykryto wolumenów w tym stacku",
+	"containers_backup_advanced": "Zaawansowane",
+	"containers_backup_retention_policy": "Zasady retencji",
+	"containers_backup_retention_hint": "Starsze snapshoty są usuwane po każdym backupie. Ustaw 0, aby wyłączyć.",
+	"containers_backup_keep_last": "Ostatnie",
+	"containers_backup_keep_daily": "Dzienne",
+	"containers_backup_keep_weekly": "Tygodniowe",
+	"containers_backup_keep_monthly": "Miesięczne",
+	"containers_backup_keep_yearly": "Roczne",
+	"containers_backup_exclude_patterns": "Wzorce wykluczeń",
+	"containers_backup_exclude_patterns_hint": "Wzorce glob rozdzielone przecinkami, wykluczane z backupu.",
+	"containers_backup_yes": "Tak",
+	"containers_backup_no": "Nie",
+	"containers_backup_skip_caches": "Pomijaj katalogi pamięci podręcznej",
+	"containers_backup_skip_caches_hint_before": "Pomija foldery zawierające plik",
+	"containers_backup_skip_caches_hint_after": "- używany przez npm, pip, Cargo, przeglądarki i wiele innych narzędzi do oznaczania odtwarzalnej pamięci podręcznej. Oszczędza dużo miejsca; zawartość można zawsze odtworzyć ze źródeł. Wyłącz tylko wtedy, gdy masz konkretny powód, by backupować dane pamięci podręcznej.",
+	"containers_backup_compression": "Kompresja",
+	"containers_backup_compression_auto": "Automatyczna",
+	"containers_backup_compression_off": "Wyłączona",
+	"containers_backup_compression_max": "Maksymalna",
+	"containers_backup_upload_limit": "Limit wysyłania",
+	"containers_backup_download_limit": "Limit pobierania",
+	"containers_backup_webhooks": "Webhooki",
+	"containers_backup_on_success": "Po sukcesie",
+	"containers_backup_on_failure": "Po niepowodzeniu",
+	"containers_backup_webhooks_hint": "Żądanie POST z danymi JSON wysyłane po zakończeniu backupu (dla prostych odbiorników zamiast tego GET). Przydatne do healthchecków, Slacka itp.",
+	"containers_backup_cancel": "Anuluj",
+	"containers_backup_save": "Zapisz",
+	"containers_backup_run_once_title": "Uruchom backup teraz, bez zapisywania harmonogramu",
+	"containers_backup_run_once": "Uruchom raz",
+	"containers_backup_save_schedule": "Zapisz harmonogram",
+	"containers_backup_save_run_title": "Zapisz harmonogram i od razu uruchom backup",
+	"containers_backup_save_run": "Zapisz i uruchom",
+	"containers_backup_add_another": "Dodaj kolejny harmonogram",
+	"containers_backup_configure": "Skonfiguruj backup",
+	"containers_backup_progress_description": "Postęp backupu dla {name} na bieżąco.",
+	"containers_backup_backing_up": "Backup w toku...",
+	"containers_backup_completed": "Backup zakończony",
+	"containers_backup_cancelling": "Anulowanie...",
+	"containers_backup_cancel_backup": "Anuluj backup",
+	"containers_backup_ok": "OK",
+	"containers_backup_log_title": "Log backupu",
+	"containers_backup_loading_log": "Wczytywanie logu...",
+	"containers_backup_no_log_output": "Dla tego uruchomienia nie zapisano żadnego logu.",
 	"containers_restore_post_start_stack": "Uruchom stack",
 	"containers_restore_post_start_container": "Uruchom kontener",
 	"containers_restore_post_recreate_if_missing": "Odtwórz, jeśli brakuje",
@@ -2197,6 +2372,7 @@
 	"updatesteps_criteria_title_critical_high": "Blokuj przy krytycznych lub wysokich",
 	"updatesteps_criteria_title_critical": "Blokuj tylko przy krytycznych",
 	"updatesteps_criteria_title_more_than_current": "Blokuj, gdy więcej niż w obecnym obrazie",
+	"containers_batchupdate_active_step": "{step} {name}...",
 	"shell_user_container_default": "Domyślny użytkownik kontenera",
 	"containersstore_label_on": "wł.",
 	"containersstore_label_daily": "codziennie",
@@ -2282,5 +2458,448 @@
 	"gridcol_hint_stack_webhook": "Identyfikator i adres webhooka git-stacka (do podłączenia Gitei/GitHuba/GitLaba)",
 	"gridcol_hint_backup_type": "Backup kontenera albo stacka",
 	"gridcol_hint_backup_repository": "Cel backupu (S3, REST, lokalny itp.)",
-	"gridcol_hint_last_backup_status": "Status ostatniego backupu"
+	"gridcol_hint_last_backup_status": "Status ostatniego backupu",
+	"stacks_item_stack": "stack",
+	"stacks_list_filter_partial": "Częściowo",
+	"stacks_list_filter_stopped": "Zatrzymane",
+	"stacks_list_filter_not_deployed": "Niewdrożone",
+	"stacks_list_status_stopped": "zatrzymany",
+	"stacks_list_status_partial": "częściowo",
+	"stacks_list_status_not_deployed": "niewdrożony",
+	"stacks_list_batch_starting": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Uruchamianie {count} stacka",
+				"countPlural=few": "Uruchamianie {count} stacków",
+				"countPlural=many": "Uruchamianie {count} stacków",
+				"countPlural=other": "Uruchamianie {count} stacków"
+			}
+		}
+	],
+	"stacks_list_batch_stopping": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Zatrzymywanie {count} stacka",
+				"countPlural=few": "Zatrzymywanie {count} stacków",
+				"countPlural=many": "Zatrzymywanie {count} stacków",
+				"countPlural=other": "Zatrzymywanie {count} stacków"
+			}
+		}
+	],
+	"stacks_list_batch_bringing_down": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Wyłączanie {count} stacka",
+				"countPlural=few": "Wyłączanie {count} stacków",
+				"countPlural=many": "Wyłączanie {count} stacków",
+				"countPlural=other": "Wyłączanie {count} stacków"
+			}
+		}
+	],
+	"stacks_list_batch_restarting": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Restartowanie {count} stacka",
+				"countPlural=few": "Restartowanie {count} stacków",
+				"countPlural=many": "Restartowanie {count} stacków",
+				"countPlural=other": "Restartowanie {count} stacków"
+			}
+		}
+	],
+	"stacks_list_batch_removing": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Usuwanie {count} stacka",
+				"countPlural=few": "Usuwanie {count} stacków",
+				"countPlural=many": "Usuwanie {count} stacków",
+				"countPlural=other": "Usuwanie {count} stacków"
+			}
+		}
+	],
+	"stacks_list_toast_load_failed": "Nie udało się wczytać stacków",
+	"stacks_list_output_starting": "Uruchamianie {name}",
+	"stacks_list_error_start": "Nie udało się uruchomić stacka",
+	"stacks_list_output_stopping": "Zatrzymywanie {name}",
+	"stacks_list_error_stop": "Nie udało się zatrzymać stacka",
+	"stacks_list_output_recreating": "Odtwarzanie {name}",
+	"stacks_list_output_restarting": "Restartowanie {name}",
+	"stacks_list_toast_recreated": "Odtworzono {name}",
+	"stacks_list_error_restart": "Nie udało się zrestartować stacka",
+	"stacks_list_output_redeploying": "Ponowne wdrażanie {name}",
+	"stacks_list_output_option_pull": "pobierz obrazy",
+	"stacks_list_output_option_build": "zbuduj obrazy",
+	"stacks_list_output_option_force_recreate": "wymuś odtworzenie",
+	"stacks_list_output_options": "Opcje: {options}",
+	"stacks_list_output_option_none": "brak",
+	"stacks_list_toast_redeploy_failed": "Nie udało się ponownie wdrożyć {name}",
+	"stacks_list_toast_redeployed": "Ponownie wdrożono {name}",
+	"stacks_list_error_redeploy": "Nie udało się ponownie wdrożyć stacka",
+	"stacks_list_output_bringing_down": "Wyłączanie {name}",
+	"stacks_list_toast_down_failed": "Nie udało się wyłączyć {name}",
+	"stacks_list_toast_brought_down": "Wyłączono {name}",
+	"stacks_list_error_down": "Nie udało się wyłączyć stacka",
+	"stacks_list_error_remove": "Nie udało się usunąć stacka",
+	"stacks_list_removed_files_deleted": "pliki usunięte",
+	"stacks_list_removed_files_kept": "pliki zachowane",
+	"stacks_list_removed_volumes_deleted": "wolumeny usunięte",
+	"stacks_list_toast_removed": "Usunięto {name} ({details})",
+	"stacks_list_toast_container_started": "Kontener uruchomiony",
+	"stacks_list_toast_container_stopped": "Kontener zatrzymany",
+	"stacks_list_toast_container_restarted": "Kontener zrestartowany",
+	"stacks_list_toast_container_paused": "Kontener wstrzymany",
+	"stacks_list_toast_container_unpaused": "Kontener wznowiony",
+	"stacks_list_toast_container_removed": "Kontener usunięty",
+	"stacks_list_title": "Stacki compose",
+	"stacks_list_collapse_all": "Zwiń wszystkie",
+	"stacks_list_expand_all": "Rozwiń wszystkie",
+	"stacks_list_collapse": "Zwiń",
+	"stacks_list_expand": "Rozwiń",
+	"stacks_list_search_placeholder": "Szukaj stacków...",
+	"stacks_list_filter_plural": "statusy",
+	"stacks_list_layout_vertical": "Przełącz na układ pionowy (logi z boku)",
+	"stacks_list_layout_horizontal": "Przełącz na układ poziomy (logi pod spodem)",
+	"stacks_list_from_git": "Z Gita",
+	"stacks_list_adopt": "Przejmij",
+	"stacks_list_confirm_stack_count": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} stack",
+				"countPlural=few": "{count} stacki",
+				"countPlural=many": "{count} stacków",
+				"countPlural=other": "{count} stacków"
+			}
+		}
+	],
+	"stacks_list_action_down": "wyłącz",
+	"stacks_list_bulk_down_title": "Wyłącz {count}",
+	"stacks_list_down": "Wyłącz",
+	"stacks_list_empty_title": "Nie znaleziono stacków compose",
+	"stacks_list_empty_description": "Utwórz stack albo wdróż z Gita, aby zacząć",
+	"stacks_list_system_dockhand": "Kontener zarządzający Dockhand",
+	"stacks_list_system_hawser": "Zdalny agent Hawser",
+	"stacks_list_env_vars_configured": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "skonfigurowano {count} zmienną środowiskową",
+				"countPlural=few": "skonfigurowano {count} zmienne środowiskowe",
+				"countPlural=many": "skonfigurowano {count} zmiennych środowiskowych",
+				"countPlural=other": "skonfigurowano {count} zmiennych środowiskowych"
+			}
+		}
+	],
+	"stacks_list_git_updates_title": "Dostępne aktualizacje obrazów - wdróż z Gita, aby je zastosować",
+	"stacks_list_external_update_hint": "Stack zewnętrzny - aktualizacja możliwa tylko dla poszczególnych kontenerów",
+	"stacks_list_newer_version_tooltip": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} kontener ma nowszą wersję tagu",
+				"countPlural=few": "{count} kontenery mają nowszą wersję tagu",
+				"countPlural=many": "{count} kontenerów ma nowszą wersję tagu",
+				"countPlural=other": "{count} kontenerów ma nowszą wersję tagu"
+			}
+		}
+	],
+	"stacks_list_cooling_down_tooltip": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} kontener czeka na minimalny wiek obrazu",
+				"countPlural=few": "{count} kontenery czekają na minimalny wiek obrazu",
+				"countPlural=many": "{count} kontenerów czeka na minimalny wiek obrazu",
+				"countPlural=other": "{count} kontenerów czeka na minimalny wiek obrazu"
+			}
+		}
+	],
+	"stacks_list_source_internal": "Wewnętrzny",
+	"stacks_list_source_internal_hint": "Zarządzany przez Dockhand",
+	"stacks_list_source_untracked": "Nieśledzony",
+	"stacks_list_source_untracked_hint": "Nieznana lokalizacja pliku compose. Kliknij nazwę stacka albo edytuj go, aby ją ustawić.",
+	"stacks_list_copy_webhook_url": "Kopiuj adres webhooka",
+	"stacks_list_location_not_set": "Nie ustawiono",
+	"stacks_list_health_unhealthy_title": "Co najmniej jeden kontener jest niezdrowy",
+	"stacks_list_health_starting_title": "Healthcheck jeszcze się nie ustabilizował",
+	"stacks_list_health_healthy_title": "Wszystkie sprawdzane kontenery są zdrowe",
+	"stacks_list_edit_git_stack": "Edytuj stack z Gita",
+	"stacks_list_deploy": "Wdróż",
+	"stacks_list_sync_from_git": "Synchronizuj z Gita",
+	"stacks_list_view_logs": "Pokaż logi",
+	"stacks_list_restart_mode_restart_hint": "Szybki restart w miejscu. Pomija kolejność depends_on.",
+	"stacks_list_restart_mode_ordered": "Restartuj w kolejności",
+	"stacks_list_restart_mode_ordered_hint": "Zatrzymanie, potem start w kolejności depends_on. Te same identyfikatory kontenerów.",
+	"stacks_list_restart_mode_recreate": "Odtwórz (stop i up)",
+	"stacks_list_restart_mode_recreate_hint": "Odtwarza kontenery w kolejności. Nowe identyfikatory, pobiera nowsze obrazy.",
+	"stacks_list_down_title": "Wyłącz (usuń kontenery)",
+	"stacks_list_restart_count": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} restart",
+				"countPlural=few": "{count} restarty",
+				"countPlural=many": "{count} restartów",
+				"countPlural=other": "{count} restartów"
+			}
+		}
+	],
+	"stacks_list_spark_mem": "RAM",
+	"stacks_list_spark_net": "Sieć",
+	"stacks_list_spark_disk": "Dysk",
+	"stacks_list_volumes_mounted": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "podłączono {count} wolumen",
+				"countPlural=few": "podłączono {count} wolumeny",
+				"countPlural=many": "podłączono {count} wolumenów",
+				"countPlural=other": "podłączono {count} wolumenów"
+			}
+		}
+	],
+	"stacks_list_open_logs_inline": "Otwórz logi w widoku osadzonym",
+	"stacks_list_open_logs_full_view": "Otwórz logi w pełnym widoku",
+	"stacks_list_open_terminal": "Otwórz terminal",
+	"stacks_list_inspect_container": "Pokaż szczegóły kontenera",
+	"stacks_list_no_containers": "Brak kontenerów",
+	"stacks_redeploy_trigger_title": "Wdróż ponownie",
+	"stacks_redeploy_more_options": "Więcej opcji wdrożenia",
+	"stacks_redeploy_pull_images": "Pobierz obrazy",
+	"stacks_redeploy_build_images": "Zbuduj obrazy",
+	"stacks_redeploy_force_recreate": "Wymuś odtworzenie",
+	"stacks_redeploy_deploying": "Wdrażanie...",
+	"stacks_redeploy_deploy": "Wdróż",
+	"stacks_delete_will_remove_containers": "Zatrzyma i usunie kontenery stacka",
+	"stacks_delete_will_delete_files": "Usunie pliki stacka z dysku",
+	"stacks_delete_will_keep_files": "Zachowa pliki stacka na dysku",
+	"stacks_delete_will_delete_volumes": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Usunie {count} nazwany wolumen - danych nie da się odzyskać",
+				"countPlural=few": "Usunie {count} nazwane wolumeny - danych nie da się odzyskać",
+				"countPlural=many": "Usunie {count} nazwanych wolumenów - danych nie da się odzyskać",
+				"countPlural=other": "Usunie {count} nazwanych wolumenów - danych nie da się odzyskać"
+			}
+		}
+	],
+	"stacks_delete_will_keep_volumes": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Zachowa {count} nazwany wolumen",
+				"countPlural=few": "Zachowa {count} nazwane wolumeny",
+				"countPlural=many": "Zachowa {count} nazwanych wolumenów",
+				"countPlural=other": "Zachowa {count} nazwanych wolumenów"
+			}
+		}
+	],
+	"stacks_delete_title": "Usuń stack \"{name}\"",
+	"stacks_delete_description": "Wybierz, co usunąć. Kontenery stacka są zawsze zatrzymywane i usuwane.",
+	"stacks_delete_checking": "Sprawdzanie, co można usunąć...",
+	"stacks_delete_files_label": "Usuń pliki z dysku",
+	"stacks_delete_volumes_label": "Usuń nazwane wolumeny",
+	"stacks_delete_volumes_unrecoverable": "(danych nie da się odzyskać)",
+	"stacks_delete_nothing_managed": "Ten stack nie ma plików ani nazwanych wolumenów zarządzanych przez Dockhand - usunięty zostanie tylko wpis stacka i jego kontenery.",
+	"stacks_delete_what_will_happen": "Co się stanie",
+	"stacks_delete_cancel": "Anuluj",
+	"stacks_delete_remove": "Usuń",
+	"stacks_output_recreated_count": "odtworzono: {count}",
+	"stacks_output_created_count": "utworzono: {count}",
+	"stacks_output_started_count": "uruchomiono: {count}",
+	"stackenv_title": "Zmienne środowiskowe",
+	"stackenv_view_form": "Widok formularza",
+	"stackenv_view_text": "Widok tekstowy (surowy plik .env)",
+	"stackenv_pill_missing": "brakuje: {count}",
+	"stackenv_pill_defined": "zdefiniowane: {count}",
+	"stackenv_pill_optional": "opcjonalne: {count}",
+	"stackenv_load": "Wczytaj",
+	"stackenv_add": "Dodaj",
+	"stackenv_clear_title": "Wyczyścić wszystkie zmienne?",
+	"stackenv_confirm_action_clear": "wyczyść",
+	"stackenv_item_environment_variables": "zmienne środowiskowe",
+	"stackenv_clear_confirm": "Wyczyść wszystkie",
+	"stackenv_clear": "Wyczyść",
+	"stackenv_interpolation_before": "Te zmienne są dostępne do",
+	"stackenv_interpolation_strong": "interpolacji",
+	"stackenv_interpolation_using": "w składni",
+	"stackenv_interpolation_after": "w pliku compose.",
+	"stackenv_interpolation_pass_before": "Aby przekazać je do kontenerów, odwołaj się do nich w sekcji",
+	"stackenv_interpolation_pass_after": "pliku compose.",
+	"stackenv_syntax_required": "wymagana",
+	"stackenv_syntax_optional": "opcjonalna",
+	"stackenv_syntax_required_error": "wymagana, z komunikatem błędu",
+	"stackenv_secrets_not_shown": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{count} sekret nie jest pokazywany.",
+				"countPlural=few": "{count} sekrety nie są pokazywane.",
+				"countPlural=many": "{count} sekretów nie jest pokazywanych.",
+				"countPlural=other": "{count} sekretów nie jest pokazywanych."
+			}
+		}
+	],
+	"stackenv_secrets_not_shown_detail": "Sekrety nigdy nie są zapisywane na dysku - są wstrzykiwane przez środowisko powłoki przy starcie stacka.",
+	"stackenv_providerref_before": "Odwołanie do dostawcy sekretów",
+	"stackenv_providerref_resolved": "jest rozwiązywane",
+	"stackenv_providerref_here": "tutaj",
+	"stackenv_providerref_here_after": ", w środowisku stacka. Natomiast",
+	"stackenv_providerref_not": "nie",
+	"stackenv_providerref_not_after": "jest rozwiązywane, gdy zapiszesz je wprost w sekcji",
+	"stackenv_providerref_block": "pliku compose - odwołaj się tam do zmiennej przez",
+	"stackenv_providerref_instead": "zamiast tego.",
+	"stackenv_parse_warnings_title": "Nie udało się przetworzyć niektórych linii:",
+	"stackenv_parse_warnings_more": "...i {count} więcej",
+	"stackenv_parse_warnings_hint": "Przejdź do widoku tekstowego, aby je poprawić.",
+	"stackenv_injected_loaded": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "wczytano {count} sekret",
+				"countPlural=few": "wczytano {count} sekrety",
+				"countPlural=many": "wczytano {count} sekretów",
+				"countPlural=other": "wczytano {count} sekretów"
+			}
+		}
+	],
+	"stackenv_injected_from": "z",
+	"stackenv_injected_the_provider": "dostawcy",
+	"stackenv_injected_detail_before": "Wstrzyknięte do kontenera przy ostatnim wdrożeniu - nigdy nie zapisane w",
+	"stackenv_injected_detail_after": ".",
+	"stackenv_unbound_title": "Nie podłączono dostawcy sekretów",
+	"stackenv_unbound_detail": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Ten {count} sekret został wstrzyknięty przy ostatnim wdrożeniu, ale stack nie jest już podłączony do żadnego dostawcy. Następne wdrożenie go pominie. Wybierz dostawcę ponownie, aby go zachować.",
+				"countPlural=few": "Te {count} sekrety zostały wstrzyknięte przy ostatnim wdrożeniu, ale stack nie jest już podłączony do żadnego dostawcy. Następne wdrożenie je pominie. Wybierz dostawcę ponownie, aby je zachować.",
+				"countPlural=many": "Tych {count} sekretów zostało wstrzykniętych przy ostatnim wdrożeniu, ale stack nie jest już podłączony do żadnego dostawcy. Następne wdrożenie je pominie. Wybierz dostawcę ponownie, aby je zachować.",
+				"countPlural=other": "Tych {count} sekretów zostało wstrzykniętych przy ostatnim wdrożeniu, ale stack nie jest już podłączony do żadnego dostawcy. Następne wdrożenie je pominie. Wybierz dostawcę ponownie, aby je zachować."
+			}
+		}
+	],
+	"stackenv_probe_failed_named": "Nie udało się sprawdzić {provider}: {error}",
+	"stackenv_probe_failed": "Nie udało się sprawdzić dostawcy sekretów: {error}",
+	"stackenv_add_missing": "Dodaj brakujące:",
+	"stackenv_source_file": "Z pliku env w repozytorium",
+	"stackenv_source_revert": "Przywróć wartość z pliku",
+	"stackenv_source_override": "Nadpisane ręcznie (brak w pliku)",
+	"stackenv_status_required_defined": "Wymagana zmienna zdefiniowana",
+	"stackenv_status_optional": "Zmienna opcjonalna (ma wartość domyślną)",
+	"stackenv_status_unused": "Nieużywana zmienna",
+	"stackenv_field_name": "Nazwa",
+	"stackenv_field_value": "Wartość",
+	"stackenv_secret_locked": "Wartość sekretna (nie można odsłonić)",
+	"stackenv_secret_marked": "Oznaczona jako sekret",
+	"stackenv_secret_mark": "Oznacz jako sekret",
+	"stackenv_empty": "Nie zdefiniowano zmiennych środowiskowych.",
+	"stackenv_add_first": "Dodaj pierwszą zmienną",
+	"secretprovider_label": "Dostawca sekretów",
+	"secretprovider_unknown": "Nieznany dostawca",
+	"secretprovider_none_disabled": "Brak - wyłączone",
+	"secretprovider_none": "Brak",
+	"stacks_list_restart_stack": "Zrestartuj stack {name}",
+	"stacks_redeploy_header": "Wdróż ponownie stack {name}"
 }
