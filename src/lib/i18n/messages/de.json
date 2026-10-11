@@ -3530,7 +3530,7 @@
 	"volumes_list_search_placeholder": "Volumes suchen…",
 	"volumes_list_filter_drivers_plural": "Treiber",
 	"volumes_list_filter_usage": "Verwendung",
-	"volumes_list_filter_usages_plural": "Filter",
+	"volumes_list_filter_usages_plural": "Verwendungen",
 	"volumes_list_confirm_unused_volumes": "ungenutzte Volumes",
 	"volumes_list_prune_title": "Volumes bereinigen",
 	"volumes_list_confirm_volume_count": [
