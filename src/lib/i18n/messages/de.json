@@ -2961,6 +2961,7 @@
 		{
 			"declarations": [
 				"input count",
+				"input env",
 				"local countPlural = count: plural"
 			],
 			"selectors": [
