@@ -27,7 +27,7 @@
  * The opt-out model means labels override DB settings (label wins).
  */
 
-import { compileVersionPattern } from './semver/tag-parser';
+import { compileVersionPattern, versionPatternRejection } from './semver/tag-parser';
 
 /** Recognized Dockhand label keys */
 export const DOCKHAND_LABELS = {
@@ -171,6 +171,17 @@ export function getVersionPatternOverride(
 	labels: Record<string, string> | undefined | null
 ): RegExp | null {
 	return compileVersionPattern(getLabel(labels, DOCKHAND_LABELS.VERSION_PATTERN));
+}
+
+/**
+ * Why this container's `dockhand.version.pattern` was not used, or null when it was
+ * (or when there is no label). Lets a caller say so once, since a rejected label is
+ * otherwise indistinguishable from no label at all.
+ */
+export function getVersionPatternRejection(
+	labels: Record<string, string> | undefined | null
+): string | null {
+	return versionPatternRejection(getLabel(labels, DOCKHAND_LABELS.VERSION_PATTERN));
 }
 
 /**

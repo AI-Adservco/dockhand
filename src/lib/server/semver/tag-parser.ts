@@ -185,10 +185,18 @@ export const ALTERNATION_QUANTIFIER_RE = new RegExp(
  */
 export const MAX_QUANTIFIERS = 8;
 const QUANTIFIER_RE = /[+*?]|\{\d*,?\d*\}/g;
+/**
+ * Group-opening syntax, which spends a `?` without being a quantifier:
+ * `(?<name>`, `(?:`, `(?=`, `(?!`, `(?<=`, `(?<!`. A named group is REQUIRED to
+ * write an override at all, so counting its `?` makes each version part cost two
+ * and puts the documented five-part forms over the limit.
+ */
+const GROUP_SYNTAX_RE = /\(\?(?:<[A-Za-z_][A-Za-z0-9_]*>|<[=!]|[:=!])/g;
 
 /** Whether a pattern carries so many quantifiers that one match could stall. */
 export function hasTooManyQuantifiers(source: string): boolean {
-	return (source.match(QUANTIFIER_RE) ?? []).length > MAX_QUANTIFIERS;
+	const quantifiersOnly = source.replace(GROUP_SYNTAX_RE, '(');
+	return (quantifiersOnly.match(QUANTIFIER_RE) ?? []).length > MAX_QUANTIFIERS;
 }
 
 /**
@@ -198,6 +206,32 @@ export function hasTooManyQuantifiers(source: string): boolean {
  * `regex:` scheme, a `major` named group, a sane length, and rejects obvious
  * catastrophic-backtracking shapes (the value comes from an untrusted image label).
  */
+/**
+ * Why a `dockhand.version.pattern` label was not used, or null when it was. The
+ * fallback to the default parser is deliberate - a bad label must cost the label,
+ * never the update check - but from outside the label just does nothing, so the
+ * caller can log this once instead of leaving somebody to read this file.
+ */
+export function versionPatternRejection(value: string | undefined | null): string | null {
+	if (!value) return null; // no label is not a rejection
+	const trimmed = value.trim();
+	if (!trimmed.startsWith(VERSION_PATTERN_SCHEME)) return `missing the "${VERSION_PATTERN_SCHEME}" prefix`;
+
+	const source = trimmed.slice(VERSION_PATTERN_SCHEME.length);
+	if (source.length === 0) return 'the pattern is empty';
+	if (source.length > MAX_PATTERN_LENGTH) return `too long (${source.length} > ${MAX_PATTERN_LENGTH} characters)`;
+	if (!source.includes('(?<major>')) return 'no (?<major>) group, so it yields no version';
+	if (NESTED_QUANTIFIER_RE.test(source)) return 'a quantified group inside a quantifier can backtrack catastrophically';
+	if (ALTERNATION_QUANTIFIER_RE.test(source)) return 'a quantified alternation can backtrack catastrophically';
+	if (hasTooManyQuantifiers(source)) return `too many quantifiers (more than ${MAX_QUANTIFIERS})`;
+	try {
+		new RegExp(source);
+	} catch (e) {
+		return `it does not compile: ${e instanceof Error ? e.message : String(e)}`;
+	}
+	return null;
+}
+
 export function compileVersionPattern(value: string | undefined | null): RegExp | null {
 	if (!value) return null;
 	const trimmed = value.trim();
