@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
  * complete by their translators and must have every key.
  */
 
-const COMPLETE_LOCALES = ['de'];
+const COMPLETE_LOCALES = ['de', 'pl'];
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const MESSAGES = join(ROOT, 'src/lib/i18n/messages');
@@ -50,6 +50,40 @@ describe('UI translations', () => {
 	test('English is the base locale and every complete locale is configured', () => {
 		expect(settings.baseLocale).toBe('en');
 		for (const locale of COMPLETE_LOCALES) expect(settings.locales).toContain(locale);
+	});
+
+	test('the locale strategy is the same in the build config and the compile script', () => {
+		// Declared twice: the vite plugin builds with one, `npm run i18n:compile` with the
+		// other. Paraglide tree-shakes away any strategy its own invocation does not name,
+		// so the two compiling to different runtimes is a difference nothing else reports.
+		const vite = readFileSync(join(ROOT, 'vite.config.ts'), 'utf8');
+		const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
+
+		const fromVite = vite.match(/strategy:\s*\[([^\]]+)\]/)?.[1];
+		expect(fromVite).toBeDefined();
+		const viteList = [...(fromVite as string).matchAll(/'([^']+)'/g)].map((m) => m[1]);
+
+		const flag = (pkg.scripts['i18n:compile'] as string).match(/--strategy\s+([^-]+?)\s+--/)?.[1];
+		expect(flag).toBeDefined();
+		const scriptList = (flag as string).trim().split(/\s+/);
+
+		expect(scriptList).toEqual(viteList);
+		// The language is decided in hooks.client.ts instead: paraglide's own cookie and
+		// localStorage strategies write the resolved locale back on first read, which
+		// pins whatever the browser negotiated and ignores it from then on.
+		expect(viteList).not.toContain('cookie');
+		expect(viteList).not.toContain('localStorage');
+	});
+
+	test('the language picker names the browser it would follow', () => {
+		// The "follow the browser" option says which language that currently means, so
+		// the placeholder has to survive translation in every locale.
+		for (const locale of settings.locales) {
+			const messages = load(locale);
+			const follow = messages['language_follow_browser'];
+			if (follow === undefined) continue;
+			expect(placeholders(follow)).toEqual(['language']);
+		}
 	});
 
 	test('message keys are snake_case with an area prefix', () => {

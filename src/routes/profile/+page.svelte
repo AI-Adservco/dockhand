@@ -39,6 +39,7 @@
 	import ConfirmPopover from '$lib/components/ConfirmPopover.svelte';
 	import * as Table from '$lib/components/ui/table';
 	import ThemeSelector from '$lib/components/ThemeSelector.svelte';
+	import LanguageSelector from '$lib/components/LanguageSelector.svelte';
 	import NavigationSelector from '$lib/components/NavigationSelector.svelte';
 	import AnimateIconsToggle from '$lib/components/AnimateIconsToggle.svelte';
 	import IndentGuidesToggle from '$lib/components/IndentGuidesToggle.svelte';
@@ -886,6 +887,7 @@
 				</Card.Header>
 				<Card.Content class="space-y-4">
 					<ThemeSelector userId={profile.id} />
+					<LanguageSelector />
 					<ColoredActionsToggle userId={profile.id} />
 					<AnimateIconsToggle userId={profile.id} />
 				<IndentGuidesToggle userId={profile.id} />

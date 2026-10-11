@@ -1249,6 +1249,10 @@ export default defineConfig({
 		paraglideVitePlugin({
 			project: './project.inlang',
 			outdir: './src/lib/paraglide',
+			// The language is decided in hooks.client.ts, which overwrites getLocale().
+			// Paraglide's own cookie and localStorage strategies cannot be used: its
+			// getLocale() writes the resolved locale back on first read, which would
+			// pin whatever the browser negotiated and ignore it from then on.
 			strategy: ['preferredLanguage', 'baseLocale'],
 			// One module per locale instead of one per message: with thousands of messages the
 			// per-message layout makes the production build run out of memory.
