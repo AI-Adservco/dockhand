@@ -10,6 +10,7 @@
  *   the read/repo helpers re-exported for the API routes
  */
 import { Restic, type HelperRunSpec } from './restic';
+import { describeFsError } from '../fs-error';
 import { BackupService, formatResticLines, type BackupPorts, type BackupJob, type OperationHandle } from './backup-service';
 import { RestoreService, type RestorePorts, type RestoreJob } from './restore-service';
 import { openOperation } from './operations';
@@ -841,6 +842,10 @@ async function materialiseStackFiles(destination: any, snapId: string, stackName
 			console.log(`[Backup] materialiseStackFiles: wrote ${extracted.length} entries to ${resolvedTarget} (${overwrite ? 'replaced' : 'merged'})`);
 			return true;
 		} catch (copyErr) {
+			// The code, the syscall and the path are what identify the fault; the message
+			// alone reads the same for several different causes. The error is rethrown
+			// below, so this records the detail while the object is still in hand.
+			console.error(`[Backup] materialiseStackFiles: staging swap failed for ${resolvedTarget}: ${describeFsError(copyErr)}`);
 			try { rmSync(staging, { recursive: true, force: true }); } catch { /* best effort */ }
 			if (existsSync(oldAside) && !existsSync(resolvedTarget)) {
 				try { renameSync(oldAside, resolvedTarget); } catch { /* best effort */ }
