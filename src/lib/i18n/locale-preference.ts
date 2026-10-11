@@ -1,18 +1,25 @@
 /**
  * Which language the interface speaks, and where that choice lives.
  *
- * Paraglide decides the locale the first time a message renders, which is before
- * any request to the server can come back. So the choice is mirrored into
- * localStorage and read from there synchronously at startup; the database row is
- * the source of truth and catches up a moment later, the same arrangement the
- * theme uses.
+ * Paraglide decides the locale the first time a message renders, before anything
+ * could be fetched, so the choice lives in localStorage and is read synchronously
+ * at startup. It is a per-device preference: a shared or auth-less install has no
+ * user row to hang it on.
  *
  * Paraglide's own `cookie` and `localStorage` strategies cannot be used for this:
  * its `getLocale()` writes the resolved locale back through `setLocale()` on first
  * read, so merely opening the page would freeze whatever the browser negotiated
  * and the browser's own language setting would stop having any effect.
+ *
+ * The locale list comes from the inlang settings rather than the generated
+ * paraglide runtime, which is a build artefact: it is absent in a fresh checkout,
+ * so importing it here would make this module unloadable in a unit test. Both
+ * read the same file, so they cannot disagree.
  */
-import { locales, baseLocale } from '$lib/paraglide/runtime';
+import settings from '../../../project.inlang/settings.json' with { type: 'json' };
+
+const locales = settings.locales as readonly string[];
+const baseLocale = settings.baseLocale as string;
 
 export const LOCALE_STORAGE_KEY = 'dockhand-language';
 
@@ -22,11 +29,11 @@ export const LOCALE_STORAGE_KEY = 'dockhand-language';
  */
 export const FOLLOW_BROWSER = 'browser';
 
-export type Locale = (typeof locales)[number];
+export type Locale = string;
 
 /** The locale if it is one this build carries, otherwise undefined. */
 export function asLocale(value: unknown): Locale | undefined {
-	return typeof value === 'string' && (locales as readonly string[]).includes(value)
+	return typeof value === 'string' && locales.includes(value)
 		? (value as Locale)
 		: undefined;
 }
