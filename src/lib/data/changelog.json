@@ -6,6 +6,7 @@
     "changes": [
       { "type": "fix", "text": "a version pattern with four or five parts is no longer refused, and an ignored pattern says why (#1702)" },
       { "type": "fix", "text": "reading pages no longer fails behind an nginx reverse proxy that uses an upstream block (#1707)" },
+      { "type": "fix", "text": "image scans work again when the Docker daemon compresses its logs (PR#1715, @santacruz-usa)" },
       { "type": "feature", "text": "the interface follows your language - translation engine and German (#494, PR#1706, PR#1709, @Hellraiser28)" },
       { "type": "feature", "text": "Simplified Chinese translation (#494, PR#1708, @maicent)" },
       { "type": "feature", "text": "French translations, for France and Canada (#494, PR#1714, @MagnanGG)" },
