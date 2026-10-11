@@ -1,5 +1,19 @@
 [
   {
+    "version": "1.0.54",
+    "date": "",
+    "comingSoon": true,
+    "changes": [
+      { "type": "fix", "text": "a version pattern with four or five parts is no longer refused, and an ignored pattern says why (#1702)" },
+      { "type": "fix", "text": "reading pages no longer fails behind an nginx reverse proxy that uses an upstream block (#1707)" },
+      { "type": "feature", "text": "the interface follows your language - translation engine and German (#494, PR#1706, PR#1709, @Hellraiser28)" },
+      { "type": "feature", "text": "Simplified Chinese translation (#494, PR#1708, @maicent)" },
+      { "type": "feature", "text": "French translations, for France and Canada (#494, PR#1714, @MagnanGG)" },
+      { "type": "feature", "text": "Polish translation (#494)" }
+    ],
+    "imageTag": "fnsys/dockhand:v1.0.54"
+  },
+  {
     "version": "1.0.53",
     "date": "2026-10-10",
     "changes": [
