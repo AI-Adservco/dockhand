@@ -1402,7 +1402,7 @@
 								{:else if schedule.lastExecution.status === 'skipped'}
 									{m.updatesteps_step_skipped()}
 								{:else}
-									<span class="capitalize">{statusLabel(schedule.lastExecution.status)}</span>
+									<span>{statusLabel(schedule.lastExecution.status)}</span>
 								{/if}
 							</p>
 						</Tooltip.Content>
@@ -1713,7 +1713,7 @@
 								{@const SelBadgeIcon = badge.icon}
 								<Badge variant={badge.variant} class={badge.class}>
 									<SelBadgeIcon class="w-3 h-3 mr-1" />
-									<span class="capitalize">{selectedExecution.status === 'skipped' ? m.updatesteps_step_skipped() : statusLabel(selectedExecution.status)}</span>
+									<span>{selectedExecution.status === 'skipped' ? m.updatesteps_step_skipped() : statusLabel(selectedExecution.status)}</span>
 								</Badge>
 							{/if}
 						{/if}
