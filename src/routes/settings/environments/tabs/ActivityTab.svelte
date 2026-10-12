@@ -38,7 +38,8 @@
 	// Only a definite "no" disables the option. An unreachable host stays unknown, so a
 	// momentary outage never takes the setting away from somebody.
 	const percentageDead = $derived(percentageSupported === false);
-	// Worded here rather than by percentageUnsupportedNote(), whose English its test pins
+	// Two messages rather than one with an optional driver: a translation cannot drop a
+	// placeholder's clause, so the no-driver case needs its own sentence.
 	const percentageNote = $derived(
 		storageDriver?.trim()
 			? m.settings_envs_disk_pct_unsupported_driver({ driver: storageDriver.trim() })
