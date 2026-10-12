@@ -9,11 +9,20 @@ import { fileURLToPath } from 'node:url';
  * English is the source. A key missing in another locale falls back to English,
  * so a translation may follow an area later - but a locale must never carry keys
  * English does not have, or other placeholders, otherwise a message silently drops
- * a value such as a container name. Locales listed in COMPLETE_LOCALES are kept
- * complete by their translators and must have every key.
+ * a value such as a container name.
+ *
+ * COMPLETE_LOCALES must have every key. Only German is listed: the contributor who
+ * adds an area adds its German with it, so the two cannot drift apart. The other
+ * languages are translated by somebody else in a later pass, and holding their keys
+ * against the person adding the area would block a complete contribution on work
+ * that is not theirs.
+ *
+ * Add fr-FR, fr-CA, zh-CN and pl here once each has caught up with English and has
+ * a translator keeping it there - a locale only belongs in this list while somebody
+ * is committed to completing every area as it lands.
  */
 
-const COMPLETE_LOCALES = ['de', 'pl'];
+const COMPLETE_LOCALES = ['de'];
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const MESSAGES = join(ROOT, 'src/lib/i18n/messages');
