@@ -815,8 +815,8 @@
 																			localized
 																			action={m.confirm_action_delete()}
 																			itemType={m.registry_item_tag()}
+																			itemName={tag.name}
 																			title={m.registry_delete_tag_title()}
-																			description="Are you sure you want to delete {result.name}:{tag.name}? This cannot be undone."
 																			confirmText={m.registry_delete_confirm()}
 																			open={confirmDeleteKey === deleteKey}
 																			onConfirm={() => deleteTag(result.name, tag.name)}
