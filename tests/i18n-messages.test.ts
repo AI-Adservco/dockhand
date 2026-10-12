@@ -131,6 +131,19 @@ describe('UI translations', () => {
 		}
 	});
 
+	test('the locale list the app imports matches the inlang settings', () => {
+		// src/lib/i18n/locales.ts restates what paraglide compiles from, because the
+		// settings file sits outside src/ and the generated runtime does not exist in a
+		// fresh checkout. Restating it is only safe while something fails when it drifts.
+		const src = readFileSync(join(ROOT, 'src/lib/i18n/locales.ts'), 'utf8');
+		const listed = [...(src.match(/LOCALES = \[([^\]]+)\]/)?.[1] ?? '').matchAll(/'([^']+)'/g)].map(
+			(m) => m[1]
+		);
+		const base = src.match(/BASE_LOCALE = '([^']+)'/)?.[1];
+		expect(listed).toEqual(settings.locales);
+		expect(base).toBe(settings.baseLocale);
+	});
+
 	for (const locale of settings.locales.filter((l: string) => l !== settings.baseLocale)) {
 		test(`${locale} has no keys that English does not have`, () => {
 			const extra = Object.keys(load(locale)).filter((key) => !(key in base));

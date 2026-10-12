@@ -11,15 +11,13 @@
  * read, so merely opening the page would freeze whatever the browser negotiated
  * and the browser's own language setting would stop having any effect.
  *
- * The locale list comes from the inlang settings rather than the generated
- * paraglide runtime, which is a build artefact: it is absent in a fresh checkout,
- * so importing it here would make this module unloadable in a unit test. Both
- * read the same file, so they cannot disagree.
+ * The locale list comes from ./locales rather than the generated paraglide runtime,
+ * which is a build artefact absent in a fresh checkout - where the unit tests run.
  */
-import settings from '../../../project.inlang/settings.json' with { type: 'json' };
+import { LOCALES, BASE_LOCALE } from './locales';
 
-const locales = settings.locales as readonly string[];
-const baseLocale = settings.baseLocale as string;
+const locales = LOCALES as readonly string[];
+const baseLocale = BASE_LOCALE;
 
 export const LOCALE_STORAGE_KEY = 'dockhand-language';
 
