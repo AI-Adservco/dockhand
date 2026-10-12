@@ -90,7 +90,7 @@
 			<div class="skeleton w-4 h-4 rounded"></div>
 		</div>
 		<div class="flex items-center gap-1">
-			<span class="text-xs text-muted-foreground/50">{m.dashboard_containers_total()}</span>
+			<span class="text-xs text-muted-foreground/50 whitespace-nowrap">{m.dashboard_containers_total()}</span>
 			<div class="skeleton w-4 h-4 rounded"></div>
 		</div>
 	</div>
@@ -150,7 +150,7 @@
 			<span class="text-sm font-medium {containers.pendingUpdates > 0 ? 'text-amber-400' : ''}">{containers.pendingUpdates}</span>
 		</div>
 		<div class="flex items-center gap-1" title={m.dashboard_containers_total_title()}>
-			<span class="text-xs text-muted-foreground">{m.dashboard_containers_total()}</span>
+			<span class="text-xs text-muted-foreground whitespace-nowrap">{m.dashboard_containers_total()}</span>
 			<span class="text-sm font-medium">{containers.total}</span>
 		</div>
 	</div>
