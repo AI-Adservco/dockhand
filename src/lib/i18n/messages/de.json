@@ -115,7 +115,7 @@
 	"dashboard_connection_edge": "Edge",
 	"dashboard_live_updates_reconnected": "Live-Updates wieder verbunden",
 	"dashboard_live_updates_disconnected": "Live-Updates getrennt, Verbindung wird wiederhergestellt…",
-	"dashboard_live_updates_failed": "Live-Updates fehlgeschlagen – lade die Seite neu, um es erneut zu versuchen",
+	"dashboard_live_updates_failed": "Live-Updates fehlgeschlagen - lade die Seite neu, um es erneut zu versuchen",
 	"dashboard_environments_title": "Umgebungen",
 	"dashboard_labels_all": "Alle",
 	"dashboard_search_environments": "Umgebungen suchen…",
@@ -523,7 +523,7 @@
 	],
 	"containers_list_update_check_failed": "Update-Prüfung fehlgeschlagen",
 	"containers_list_registry_query_failed": "Registry konnte nicht abgefragt werden",
-	"containers_list_update_status_unknown": "Update-Status unbekannt – oft ein Rate-Limit von Docker Hub. Versuche es später erneut.",
+	"containers_list_update_status_unknown": "Update-Status unbekannt - oft ein Rate-Limit von Docker Hub. Versuche es später erneut.",
 	"containers_list_restart_count": [
 		{
 			"declarations": [
@@ -667,7 +667,7 @@
 	"containers_inspect_extra_hosts": "Zusätzliche Hosts",
 	"containers_inspect_connected_networks": "Verbundene Netzwerke",
 	"containers_inspect_shared_namespace_before": "Der Netzwerk-Namespace wird über",
-	"containers_inspect_shared_namespace_after": "geteilt – weitere Netzwerke können nicht verbunden werden.",
+	"containers_inspect_shared_namespace_after": "geteilt - weitere Netzwerke können nicht verbunden werden.",
 	"containers_inspect_network_leave": "Verlassen",
 	"containers_inspect_gateway": "Gateway",
 	"containers_inspect_aliases": "Aliasse",
@@ -857,7 +857,7 @@
 	"containers_settings_invalid_ipv6": "Ungültige IPv6-Adresse",
 	"containers_settings_invalid_mac": "Ungültige MAC-Adresse (z. B. 02:42:ac:11:00:02)",
 	"containers_settings_update_failed": "Aktualisierung fehlgeschlagen",
-	"containers_settings_applied_no_restart": "Übernommen — kein Neustart nötig",
+	"containers_settings_applied_no_restart": "Übernommen - kein Neustart nötig",
 	"containers_settings_invalid_memory_example": "Ungültiger Arbeitsspeicherwert (z. B. 512m, 1g)",
 	"containers_settings_invalid_memory": "Ungültiger Arbeitsspeicherwert",
 	"containers_settings_invalid_cpu_limit": "Ungültiges CPU-Limit (z. B. 0.5, 1.5, 2)",
@@ -1363,7 +1363,7 @@
 	"containers_backup_no": "Nein",
 	"containers_backup_skip_caches": "Cache-Verzeichnisse überspringen",
 	"containers_backup_skip_caches_hint_before": "Überspringt Ordner mit der Markierungsdatei",
-	"containers_backup_skip_caches_hint_after": "— npm, pip, Cargo, Browser und viele andere Tools kennzeichnen damit Cache-Inhalte, die sich neu erzeugen lassen. Spart viel Backup-Speicherplatz; die Inhalte lassen sich jederzeit aus der Quelle neu aufbauen. Schalte das nur aus, wenn du Cache-Daten aus einem bestimmten Grund sichern willst.",
+	"containers_backup_skip_caches_hint_after": "- npm, pip, Cargo, Browser und viele andere Tools kennzeichnen damit Cache-Inhalte, die sich neu erzeugen lassen. Spart viel Backup-Speicherplatz; die Inhalte lassen sich jederzeit aus der Quelle neu aufbauen. Schalte das nur aus, wenn du Cache-Daten aus einem bestimmten Grund sichern willst.",
 	"containers_backup_compression": "Komprimierung",
 	"containers_backup_compression_auto": "Auto",
 	"containers_backup_compression_off": "Aus",
@@ -1419,8 +1419,8 @@
 	"containers_restore_done_restored_to": "auf {env} wiederhergestellt",
 	"containers_restore_done_restored_to_stack_redeployed": "auf {env} wiederhergestellt, Stack neu bereitgestellt",
 	"containers_restore_done_restored_to_container_recreated": "auf {env} wiederhergestellt, Container neu erstellt",
-	"containers_restore_done_live_replaced": "Live-Volume ersetzt — starte {name} neu, um es zu nutzen",
-	"containers_restore_done_live_replaced_stack": "Live-Volume ersetzt — starte {name} neu bzw. stelle den Stack neu bereit, um es zu nutzen",
+	"containers_restore_done_live_replaced": "Live-Volume ersetzt - starte {name} neu, um es zu nutzen",
+	"containers_restore_done_live_replaced_stack": "Live-Volume ersetzt - starte {name} neu bzw. stelle den Stack neu bereit, um es zu nutzen",
 	"containers_restore_step1_title": "Wohin soll es gehen?",
 	"containers_restore_step1_hint": "wähle Ziel und Art",
 	"containers_restore_mode_new_location": "In eine Umgebung",
@@ -1455,15 +1455,15 @@
 	"containers_restore_tooltip_named_volume": "benanntes Volume",
 	"containers_restore_tooltip_after_container": "dort angelegt wird. Benannte Volumes sind portabler und daher vorzuziehen. Der Schritt nach der Wiederherstellung startet den Container; schlägt er fehl, sind die Daten trotzdem wiederhergestellt und du machst manuell weiter.",
 	"containers_restore_tooltip_after_stack": "dort angelegt wird. Benannte Volumes sind portabler und daher vorzuziehen. Der Schritt nach der Wiederherstellung startet den Stack; schlägt er fehl, sind die Daten trotzdem wiederhergestellt und du machst manuell weiter.",
-	"containers_restore_no_volumes_container": "Dieser Snapshot enthält keine Volumes — die Wiederherstellung erstellt den Container aus seiner gespeicherten Konfiguration neu.",
-	"containers_restore_no_volumes_stack": "Dieser Snapshot enthält keine Volumes — die Wiederherstellung erstellt den Stack aus seiner gespeicherten Konfiguration neu.",
+	"containers_restore_no_volumes_container": "Dieser Snapshot enthält keine Volumes - die Wiederherstellung erstellt den Container aus seiner gespeicherten Konfiguration neu.",
+	"containers_restore_no_volumes_stack": "Dieser Snapshot enthält keine Volumes - die Wiederherstellung erstellt den Stack aus seiner gespeicherten Konfiguration neu.",
 	"containers_restore_host_path": "Host-Pfad",
 	"containers_restore_volume": "Volume",
 	"containers_restore_placeholder_path": "/absoluter/pfad",
 	"containers_restore_placeholder_volume": "volume-name",
 	"containers_restore_volume_conflict_before": "Volume",
 	"containers_restore_volume_conflict_after": "existiert bereits auf {env}. Entferne es oder wähle ein anderes Ziel.",
-	"containers_restore_path_absolute": "Ein Host-Pfad muss absolut sein — er beginnt mit",
+	"containers_restore_path_absolute": "Ein Host-Pfad muss absolut sein - er beginnt mit",
 	"containers_restore_path_example": "z. B.",
 	"containers_restore_step3_title": "Und danach?",
 	"containers_restore_step3_hint_in_place": "wieder starten",
@@ -1471,7 +1471,7 @@
 	"containers_restore_after_restore": "Nach der Wiederherstellung",
 	"containers_restore_name_conflict_stack": "Ein Stack namens",
 	"containers_restore_name_conflict_container": "Ein Container namens",
-	"containers_restore_name_conflict_after": "existiert bereits auf {env}. Entferne ihn oder wähle „Nichts tun“ — die Wiederherstellung überschreibt ihn nicht.",
+	"containers_restore_name_conflict_after": "existiert bereits auf {env}. Entferne ihn oder wähle „Nichts tun“ - die Wiederherstellung überschreibt ihn nicht.",
 	"containers_restore_badge_has_data": "enthält Daten",
 	"containers_restore_badge_empty": "leer",
 	"containers_restore_badge_new": "neu",
@@ -1537,7 +1537,7 @@
 	"containers_restore_nothing_on": "Auf",
 	"containers_restore_is_touched": "bleibt alles unberührt",
 	"containers_restore_not_started": "nicht gestartet",
-	"containers_restore_not_started_data_lands": "— die Daten landen auf",
+	"containers_restore_not_started_data_lands": "- die Daten landen auf",
 	"containers_restore_not_started_bring_up": "und du startest ihn selbst.",
 	"containers_restore_secrets_restored_before": "Die Wiederherstellung umfasst auch",
 	"containers_restore_secrets_count": [
@@ -1569,8 +1569,8 @@
 				"countPlural"
 			],
 			"match": {
-				"countPlural=one": "Wiederherstellung — setze es danach von Hand.",
-				"countPlural=other": "Wiederherstellung — setze sie danach von Hand."
+				"countPlural=one": "Wiederherstellung - setze es danach von Hand.",
+				"countPlural=other": "Wiederherstellung - setze sie danach von Hand."
 			}
 		}
 	],
@@ -1578,8 +1578,8 @@
 	"containers_restore_remap_stack_before": "Deine Daten landen in den neuen Volumes. Der Stack wird aber aus der gespeicherten Compose-Datei neu bereitgestellt, die noch die",
 	"containers_restore_remap_container_before": "Deine Daten landen in den neuen Volumes. Der neu erstellte Container bindet aber die",
 	"containers_restore_remap_original": "ursprünglichen",
-	"containers_restore_remap_stack_after": "Volumes nennt — er startet also mit leeren Volumes.",
-	"containers_restore_remap_container_after": "Volumes ein — er sieht die wiederhergestellten Daten also nicht.",
+	"containers_restore_remap_stack_after": "Volumes nennt - er startet also mit leeren Volumes.",
+	"containers_restore_remap_container_after": "Volumes ein - er sieht die wiederhergestellten Daten also nicht.",
 	"containers_restore_remap_after_restoring": "Nach der Wiederherstellung:",
 	"containers_restore_remap_fix_stack": "Passe die Compose-Datei an die neuen Volume-Namen an und stelle den Stack dann neu bereit.",
 	"containers_restore_remap_fix_container": "Bearbeite den Container und richte den Mount auf das neue Volume.",
@@ -1958,7 +1958,7 @@
 			}
 		}
 	],
-	"backupui_bind_mounts_warning": "Die Inhalte werden im Snapshot erfasst, die Quellen der Binds sind aber Host-Pfade. Für eine Wiederherstellung in einer anderen Umgebung müssen genau diese Pfade auf dem Ziel-Host existieren — sonst starten die Dienste mit leeren Mounts.",
+	"backupui_bind_mounts_warning": "Die Inhalte werden im Snapshot erfasst, die Quellen der Binds sind aber Host-Pfade. Für eine Wiederherstellung in einer anderen Umgebung müssen genau diese Pfade auf dem Ziel-Host existieren - sonst starten die Dienste mit leeren Mounts.",
 	"backupui_from_source": "aus {source}",
 	"backupui_not_backed_up": "Socket / Systempfad - wird nicht gesichert",
 	"backupui_select_repository": "Repository auswählen…",
@@ -2008,7 +2008,7 @@
 	"execution_status_skipped": "Übersprungen",
 	"execution_status_queued": "In Warteschlange",
 	"execution_empty": "Noch keine Backup-Läufe.",
-	"execution_empty_hint": "Führe ein Backup aus — der Verlauf erscheint dann hier.",
+	"execution_empty_hint": "Führe ein Backup aus - der Verlauf erscheint dann hier.",
 	"execution_col_run": "Lauf",
 	"execution_col_trigger": "Auslöser",
 	"execution_col_duration": "Dauer",
@@ -2442,7 +2442,7 @@
 			}
 		}
 	],
-	"stacks_list_git_updates_title": "Image-Updates verfügbar – aus Git bereitstellen, um sie zu übernehmen",
+	"stacks_list_git_updates_title": "Image-Updates verfügbar - aus Git bereitstellen, um sie zu übernehmen",
 	"stacks_list_external_update_hint": "Externer Stack - Update nur für einzelne Container möglich.",
 	"stacks_list_newer_version_tooltip": [
 		{
@@ -2577,9 +2577,9 @@
 	"stacks_modal_tags": "Tags",
 	"stacks_modal_stack_name": "Stack-Name",
 	"stacks_modal_untracked_title": "Nicht erfasster Stack",
-	"stacks_modal_untracked_description": "– dieser Stack läuft in Docker, aber Dockhand weiß nicht, wo seine Compose-Datei auf dem Datenträger liegt. Suche die Datei, um den Stack bearbeiten und verwalten zu können.",
+	"stacks_modal_untracked_description": "- dieser Stack läuft in Docker, aber Dockhand weiß nicht, wo seine Compose-Datei auf dem Datenträger liegt. Suche die Datei, um den Stack bearbeiten und verwalten zu können.",
 	"stacks_modal_running_containers": "Laufende Container:",
-	"stacks_modal_git_readonly_title": "Dies ist ein von Git verwalteter Stack – Dockhand zeigt sein Compose schreibgeschützt an; bearbeite es im Repository.",
+	"stacks_modal_git_readonly_title": "Dies ist ein von Git verwalteter Stack - Dockhand zeigt sein Compose schreibgeschützt an; bearbeite es im Repository.",
 	"stacks_modal_git_readonly": "Git · schreibgeschützt",
 	"stacks_modal_copy_commit_hash": "Commit-Hash kopieren",
 	"stacks_modal_copy_repository_url": "Repository-URL kopieren",
@@ -2619,7 +2619,7 @@
 	"stacks_modal_deploying": "Wird bereitgestellt…",
 	"stacks_modal_save_and_redeploy": "Speichern & neu bereitstellen",
 	"stacks_modal_force_recreate_reason_on": "Vorausgewählt, weil dieser Stack Umgebungsvariablen setzt und Compose eine geänderte Variable nicht selbst erkennt. Entferne den Haken, um nur die Services mit geänderter Konfiguration neu zu erstellen.",
-	"stacks_modal_force_recreate_reason_off": "Nicht ausgewählt, weil dieser Stack keine Umgebungsvariablen setzt – Compose erstellt daher nur die Services mit geänderter Konfiguration neu. Setze den Haken, um jeden Service neu zu erstellen.",
+	"stacks_modal_force_recreate_reason_off": "Nicht ausgewählt, weil dieser Stack keine Umgebungsvariablen setzt - Compose erstellt daher nur die Services mit geänderter Konfiguration neu. Setze den Haken, um jeden Service neu zu erstellen.",
 	"stacks_modal_choose_icon": "Wähle ein Stack-Icon",
 	"stacks_modal_unsaved_description": "Du hast ungespeicherte Änderungen. Möchtest du wirklich schließen, ohne zu speichern?",
 	"stacks_modal_continue_editing": "Weiter bearbeiten",
@@ -2838,7 +2838,7 @@
 	"stacks_git_copy_url": "URL kopieren",
 	"stacks_git_copy_requires_https": "Kopieren erfordert HTTPS",
 	"stacks_git_webhook_secret": "Webhook-Secret",
-	"stacks_git_webhook_secret_placeholder": "Erforderlich – Secret generieren oder einfügen",
+	"stacks_git_webhook_secret_placeholder": "Erforderlich - Secret generieren oder einfügen",
 	"stacks_git_copy_secret": "Secret kopieren",
 	"stacks_git_generate_secret": "Secret generieren",
 	"stacks_git_webhook_url_after_create": "Die Webhook-URL ist verfügbar, sobald der Stack erstellt wurde.",
@@ -2862,7 +2862,7 @@
 	"stacks_git_env_info_interpolation_before": "Variablen stehen für die",
 	"stacks_git_env_info_interpolation": "Interpolation in der Compose-Datei",
 	"stacks_git_env_info_syntax_before": "mit der Syntax",
-	"stacks_git_env_info_syntax_after": "zur Verfügung. Sie werden nicht automatisch in Container eingefügt – nutze",
+	"stacks_git_env_info_syntax_after": "zur Verfügung. Sie werden nicht automatisch in Container eingefügt - nutze",
 	"stacks_git_env_info_reference_before": "oder trage",
 	"stacks_git_env_info_reference_in": "in",
 	"stacks_git_env_info_reference_after": "ein, um sie weiterzugeben.",
@@ -2957,7 +2957,7 @@
 	],
 	"stacks_import_browser_title_env": "Stacks in {env} übernehmen",
 	"stacks_import_browser_title": "Stacks übernehmen",
-	"stacks_import_browser_description_remote": "Durchsuche das Dateisystem des Dockhand-Hosts nach Compose-Dateien. Die Dateien werden lokal verwaltet — Hawser leitet nur Docker-API-Aufrufe weiter, keinen Dateisystemzugriff.",
+	"stacks_import_browser_description_remote": "Durchsuche das Dateisystem des Dockhand-Hosts nach Compose-Dateien. Die Dateien werden lokal verwaltet - Hawser leitet nur Docker-API-Aufrufe weiter, keinen Dateisystemzugriff.",
 	"stacks_import_browser_description": "Navigiere zu einer Compose-Datei oder scanne einen Ordner nach Stacks.",
 	"stacks_import_results_title": "Wähle Stacks zur Übernahme in",
 	"stacks_import_results_description": [
@@ -3031,7 +3031,7 @@
 	"stacks_deploys_history_load_failed_status": "Bereitstellungsverlauf konnte nicht geladen werden ({status})",
 	"stacks_deploys_history_load_failed": "Bereitstellungsverlauf konnte nicht geladen werden.",
 	"stacks_deploys_empty_title": "Noch keine Bereitstellungsläufe.",
-	"stacks_deploys_empty_description": "Stelle diesen Stack bereit — sein Verlauf erscheint hier.",
+	"stacks_deploys_empty_description": "Stelle diesen Stack bereit - sein Verlauf erscheint hier.",
 	"stacks_deploys_item_run": "Bereitstellungslauf",
 	"stacks_deploys_delete_title": "Diesen Lauf löschen",
 	"stacks_deploys_build": "Build",
@@ -3128,8 +3128,8 @@
 				"countPlural"
 			],
 			"match": {
-				"countPlural=one": "{count} benanntes Volume löschen – die Daten sind nicht wiederherstellbar",
-				"countPlural=other": "{count} benannte Volumes löschen – die Daten sind nicht wiederherstellbar"
+				"countPlural=one": "{count} benanntes Volume löschen - die Daten sind nicht wiederherstellbar",
+				"countPlural=other": "{count} benannte Volumes löschen - die Daten sind nicht wiederherstellbar"
 			}
 		}
 	],
@@ -3154,7 +3154,7 @@
 	"stacks_delete_files_label": "Dateien auf dem Datenträger löschen",
 	"stacks_delete_volumes_label": "Benannte Volumes löschen",
 	"stacks_delete_volumes_unrecoverable": "(Daten sind nicht wiederherstellbar)",
-	"stacks_delete_nothing_managed": "Dieser Stack hat keine von Dockhand verwalteten Dateien oder benannten Volumes – nur der Stack-Eintrag und seine Container werden entfernt.",
+	"stacks_delete_nothing_managed": "Dieser Stack hat keine von Dockhand verwalteten Dateien oder benannten Volumes - nur der Stack-Eintrag und seine Container werden entfernt.",
 	"stacks_delete_what_will_happen": "Was passiert",
 	"stacks_delete_cancel": "Abbrechen",
 	"stacks_delete_remove": "Entfernen",
@@ -3227,7 +3227,7 @@
 	],
 	"stackenv_injected_from": "aus",
 	"stackenv_injected_the_provider": "dem Provider",
-	"stackenv_injected_detail_before": "Beim letzten Bereitstellen in den Container eingespeist — nie in",
+	"stackenv_injected_detail_before": "Beim letzten Bereitstellen in den Container eingespeist - nie in",
 	"stackenv_injected_detail_after": " geschrieben.",
 	"stackenv_unbound_title": "Kein Secret-Provider verknüpft",
 	"stackenv_unbound_detail": [
@@ -3263,7 +3263,7 @@
 	"stackenv_add_first": "Füge deine erste Variable hinzu",
 	"secretprovider_label": "Secret-Provider",
 	"secretprovider_unknown": "Unbekannter Provider",
-	"secretprovider_none_disabled": "Keiner — deaktiviert",
+	"secretprovider_none_disabled": "Keiner - deaktiviert",
 	"secretprovider_none": "Keiner",
 	"stacks_list_restart_stack": "Stack {name} neu starten",
 	"stacks_redeploy_header": "Stack {name} neu bereitstellen",
@@ -3489,7 +3489,7 @@
 	"images_layers_none": "Kein Layer-Verlauf gefunden",
 	"images_layers_total_layers": "Layer gesamt:",
 	"images_layers_total_size": "Gesamtgröße:",
-	"images_layers_stack_heading": "Layer-Stack (von unten nach oben) – klicke zum Aufklappen",
+	"images_layers_stack_heading": "Layer-Stack (von unten nach oben) - klicke zum Aufklappen",
 	"images_layers_size_large": "Groß",
 	"images_layers_size_normal": "Normal",
 	"images_layers_created": "Erstellt",

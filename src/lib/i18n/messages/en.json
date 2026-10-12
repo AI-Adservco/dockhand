@@ -467,7 +467,7 @@
 	"containers_list_update_held_title": "Update held: {count} hour(s) left of the minimum image age",
 	"containers_list_update_check_failed": "Update check failed",
 	"containers_list_registry_query_failed": "Could not query registry",
-	"containers_list_update_status_unknown": "Update status unknown — often a Docker Hub rate limit. Try again later.",
+	"containers_list_update_status_unknown": "Update status unknown - often a Docker Hub rate limit. Try again later.",
 	"containers_list_restart_count": "{count} restarts",
 	"containers_list_memory_unlimited": "unlimited",
 	"containers_list_memory_title_cache": "{usage} / {limit} (Total: {total} | Cache: {cache})",
@@ -597,7 +597,7 @@
 	"containers_inspect_extra_hosts": "Extra hosts",
 	"containers_inspect_connected_networks": "Connected networks",
 	"containers_inspect_shared_namespace_before": "Network namespace is shared via",
-	"containers_inspect_shared_namespace_after": "— additional networks cannot be attached.",
+	"containers_inspect_shared_namespace_after": "- additional networks cannot be attached.",
 	"containers_inspect_network_leave": "Leave",
 	"containers_inspect_gateway": "Gateway",
 	"containers_inspect_aliases": "Aliases",
@@ -787,7 +787,7 @@
 	"containers_settings_invalid_ipv6": "Invalid IPv6 address",
 	"containers_settings_invalid_mac": "Invalid MAC address (e.g., 02:42:ac:11:00:02)",
 	"containers_settings_update_failed": "Update failed",
-	"containers_settings_applied_no_restart": "Applied — no restart needed",
+	"containers_settings_applied_no_restart": "Applied - no restart needed",
 	"containers_settings_invalid_memory_example": "Invalid memory value (e.g. 512m, 1g)",
 	"containers_settings_invalid_memory": "Invalid memory value",
 	"containers_settings_invalid_cpu_limit": "Invalid CPU limit (e.g. 0.5, 1.5, 2)",
@@ -1293,7 +1293,7 @@
 	"containers_backup_no": "No",
 	"containers_backup_skip_caches": "Skip cache directories",
 	"containers_backup_skip_caches_hint_before": "Skips folders containing a",
-	"containers_backup_skip_caches_hint_after": "marker file — used by npm, pip, Cargo, browsers, and many other tools to tag regenerable cache content. Saves significant backup space; the contents can always be rebuilt from source. Turn off only if you have a specific reason to back up cache data.",
+	"containers_backup_skip_caches_hint_after": "marker file - used by npm, pip, Cargo, browsers, and many other tools to tag regenerable cache content. Saves significant backup space; the contents can always be rebuilt from source. Turn off only if you have a specific reason to back up cache data.",
 	"containers_backup_compression": "Compression",
 	"containers_backup_compression_auto": "Auto",
 	"containers_backup_compression_off": "Off",
@@ -1349,8 +1349,8 @@
 	"containers_restore_done_restored_to": "restored to {env}",
 	"containers_restore_done_restored_to_stack_redeployed": "restored to {env}, stack redeployed",
 	"containers_restore_done_restored_to_container_recreated": "restored to {env}, container recreated",
-	"containers_restore_done_live_replaced": "live volume replaced — restart {name} to use it",
-	"containers_restore_done_live_replaced_stack": "live volume replaced — restart {name} / redeploy the stack to use it",
+	"containers_restore_done_live_replaced": "live volume replaced - restart {name} to use it",
+	"containers_restore_done_live_replaced_stack": "live volume replaced - restart {name} / redeploy the stack to use it",
 	"containers_restore_step1_title": "Where does it go?",
 	"containers_restore_step1_hint": "pick where, and how",
 	"containers_restore_mode_new_location": "To an environment",
@@ -1385,15 +1385,15 @@
 	"containers_restore_tooltip_named_volume": "named volume",
 	"containers_restore_tooltip_after_container": "is created there. Prefer named volumes for portability. The post-restore step brings the container up; if it fails, the data is still restored and you finish manually.",
 	"containers_restore_tooltip_after_stack": "is created there. Prefer named volumes for portability. The post-restore step brings the stack up; if it fails, the data is still restored and you finish manually.",
-	"containers_restore_no_volumes_container": "This snapshot has no volumes — restore recreates the container from its saved config.",
-	"containers_restore_no_volumes_stack": "This snapshot has no volumes — restore recreates the stack from its saved config.",
+	"containers_restore_no_volumes_container": "This snapshot has no volumes - restore recreates the container from its saved config.",
+	"containers_restore_no_volumes_stack": "This snapshot has no volumes - restore recreates the stack from its saved config.",
 	"containers_restore_host_path": "Host path",
 	"containers_restore_volume": "Volume",
 	"containers_restore_placeholder_path": "/absolute/path",
 	"containers_restore_placeholder_volume": "volume-name",
 	"containers_restore_volume_conflict_before": "Volume",
 	"containers_restore_volume_conflict_after": "already exists on {env}. Remove it or choose another destination.",
-	"containers_restore_path_absolute": "A host path must be absolute — start it with",
+	"containers_restore_path_absolute": "A host path must be absolute - start it with",
 	"containers_restore_path_example": "e.g.",
 	"containers_restore_step3_title": "Then what?",
 	"containers_restore_step3_hint_in_place": "bring it back up",
@@ -1401,7 +1401,7 @@
 	"containers_restore_after_restore": "After restore",
 	"containers_restore_name_conflict_stack": "A stack named",
 	"containers_restore_name_conflict_container": "A container named",
-	"containers_restore_name_conflict_after": "already exists on {env}. Remove it or choose \"Do nothing\" — the restore won't overwrite it.",
+	"containers_restore_name_conflict_after": "already exists on {env}. Remove it or choose \"Do nothing\" - the restore won't overwrite it.",
 	"containers_restore_badge_has_data": "has data",
 	"containers_restore_badge_empty": "empty",
 	"containers_restore_badge_new": "new",
@@ -1467,7 +1467,7 @@
 	"containers_restore_nothing_on": "Nothing on",
 	"containers_restore_is_touched": "is touched",
 	"containers_restore_not_started": "not started",
-	"containers_restore_not_started_data_lands": "— the data lands on",
+	"containers_restore_not_started_data_lands": "- the data lands on",
 	"containers_restore_not_started_bring_up": "and you bring it up yourself.",
 	"containers_restore_secrets_restored_before": "Its",
 	"containers_restore_secrets_count": [
@@ -1499,8 +1499,8 @@
 				"countPlural"
 			],
 			"match": {
-				"countPlural=one": "be restored — set it by hand afterwards.",
-				"countPlural=other": "be restored — set them by hand afterwards."
+				"countPlural=one": "be restored - set it by hand afterwards.",
+				"countPlural=other": "be restored - set them by hand afterwards."
 			}
 		}
 	],
@@ -1508,8 +1508,8 @@
 	"containers_restore_remap_stack_before": "Your data goes to the new volumes. But the stack redeploys from the stored compose file, which still names the",
 	"containers_restore_remap_container_before": "Your data goes to the new volumes. But the recreated container mounts the",
 	"containers_restore_remap_original": "original",
-	"containers_restore_remap_stack_after": "ones — so it starts with empty volumes.",
-	"containers_restore_remap_container_after": "ones — so it won't see the restored data.",
+	"containers_restore_remap_stack_after": "ones - so it starts with empty volumes.",
+	"containers_restore_remap_container_after": "ones - so it won't see the restored data.",
 	"containers_restore_remap_after_restoring": "After restoring:",
 	"containers_restore_remap_fix_stack": "update the compose file to the new volume names, then redeploy.",
 	"containers_restore_remap_fix_container": "edit the container and point the mount at the new volume.",
@@ -1774,7 +1774,7 @@
 			}
 		}
 	],
-	"backupui_bind_mounts_warning": "Contents are captured in the snapshot, but bind sources are host paths. Restoring to a different environment requires those exact paths on the target host — otherwise services start with empty mounts.",
+	"backupui_bind_mounts_warning": "Contents are captured in the snapshot, but bind sources are host paths. Restoring to a different environment requires those exact paths on the target host - otherwise services start with empty mounts.",
 	"backupui_from_source": "from {source}",
 	"backupui_not_backed_up": "socket / system path - not backed up",
 	"backupui_select_repository": "Select repository...",
@@ -1824,7 +1824,7 @@
 	"execution_status_skipped": "Skipped",
 	"execution_status_queued": "Queued",
 	"execution_empty": "No backup runs yet.",
-	"execution_empty_hint": "Run a backup — its history appears here.",
+	"execution_empty_hint": "Run a backup - its history appears here.",
 	"execution_col_run": "Run",
 	"execution_col_trigger": "Trigger",
 	"execution_col_duration": "Duration",
@@ -2258,7 +2258,7 @@
 			}
 		}
 	],
-	"stacks_list_git_updates_title": "Image updates available — deploy from Git to apply",
+	"stacks_list_git_updates_title": "Image updates available - deploy from Git to apply",
 	"stacks_list_external_update_hint": "External stack - update possible for individual containers only.",
 	"stacks_list_newer_version_tooltip": [
 		{
@@ -2393,9 +2393,9 @@
 	"stacks_modal_tags": "Tags",
 	"stacks_modal_stack_name": "Stack name",
 	"stacks_modal_untracked_title": "Untracked stack",
-	"stacks_modal_untracked_description": "— this stack is running in Docker but Dockhand doesn't know where its compose file is stored on disk. Browse to locate the file to start editing and managing it.",
+	"stacks_modal_untracked_description": "- this stack is running in Docker but Dockhand doesn't know where its compose file is stored on disk. Browse to locate the file to start editing and managing it.",
 	"stacks_modal_running_containers": "Running containers:",
-	"stacks_modal_git_readonly_title": "This is a Git-managed stack — Dockhand shows its compose read-only; edit it in the repository.",
+	"stacks_modal_git_readonly_title": "This is a Git-managed stack - Dockhand shows its compose read-only; edit it in the repository.",
 	"stacks_modal_git_readonly": "Git · read-only",
 	"stacks_modal_copy_commit_hash": "Copy commit hash",
 	"stacks_modal_copy_repository_url": "Copy repository URL",
@@ -2678,7 +2678,7 @@
 	"stacks_git_env_info_interpolation_before": "Variables are available for",
 	"stacks_git_env_info_interpolation": "compose file interpolation",
 	"stacks_git_env_info_syntax_before": "using",
-	"stacks_git_env_info_syntax_after": "syntax. They are not automatically injected into containers — use",
+	"stacks_git_env_info_syntax_after": "syntax. They are not automatically injected into containers - use",
 	"stacks_git_env_info_reference_before": "or reference",
 	"stacks_git_env_info_reference_in": "in",
 	"stacks_git_env_info_reference_after": "to pass them through.",
@@ -2773,7 +2773,7 @@
 	],
 	"stacks_import_browser_title_env": "Adopt stacks to {env}",
 	"stacks_import_browser_title": "Adopt stacks",
-	"stacks_import_browser_description_remote": "Browse the Dockhand host filesystem to find compose files. Files are managed locally — Hawser only proxies Docker API calls, not filesystem access.",
+	"stacks_import_browser_description_remote": "Browse the Dockhand host filesystem to find compose files. Files are managed locally - Hawser only proxies Docker API calls, not filesystem access.",
 	"stacks_import_browser_description": "Browse to a compose file or scan a directory for stacks.",
 	"stacks_import_results_title": "Select stacks to adopt to",
 	"stacks_import_results_description": [
@@ -2847,7 +2847,7 @@
 	"stacks_deploys_history_load_failed_status": "Failed to load deploy history ({status})",
 	"stacks_deploys_history_load_failed": "Failed to load deploy history.",
 	"stacks_deploys_empty_title": "No deploy runs yet.",
-	"stacks_deploys_empty_description": "Deploy this stack — its run history appears here.",
+	"stacks_deploys_empty_description": "Deploy this stack - its run history appears here.",
 	"stacks_deploys_item_run": "deploy run",
 	"stacks_deploys_delete_title": "Delete this run",
 	"stacks_deploys_build": "Build",
@@ -2944,8 +2944,8 @@
 				"countPlural"
 			],
 			"match": {
-				"countPlural=one": "Delete {count} named volume — data is unrecoverable",
-				"countPlural=other": "Delete {count} named volumes — data is unrecoverable"
+				"countPlural=one": "Delete {count} named volume - data is unrecoverable",
+				"countPlural=other": "Delete {count} named volumes - data is unrecoverable"
 			}
 		}
 	],
@@ -2970,7 +2970,7 @@
 	"stacks_delete_files_label": "Delete files on disk",
 	"stacks_delete_volumes_label": "Delete named volumes",
 	"stacks_delete_volumes_unrecoverable": "(data is unrecoverable)",
-	"stacks_delete_nothing_managed": "This stack has no files or named volumes Dockhand manages — only the stack record and its containers will be removed.",
+	"stacks_delete_nothing_managed": "This stack has no files or named volumes Dockhand manages - only the stack record and its containers will be removed.",
 	"stacks_delete_what_will_happen": "What will happen",
 	"stacks_delete_cancel": "Cancel",
 	"stacks_delete_remove": "Remove",
@@ -3043,7 +3043,7 @@
 	],
 	"stackenv_injected_from": "from",
 	"stackenv_injected_the_provider": "the provider",
-	"stackenv_injected_detail_before": "Injected into the container at last deploy — never written to",
+	"stackenv_injected_detail_before": "Injected into the container at last deploy - never written to",
 	"stackenv_injected_detail_after": ".",
 	"stackenv_unbound_title": "No secret provider is bound",
 	"stackenv_unbound_detail": [
@@ -3079,7 +3079,7 @@
 	"stackenv_add_first": "Add your first variable",
 	"secretprovider_label": "Secret provider",
 	"secretprovider_unknown": "Unknown provider",
-	"secretprovider_none_disabled": "None — disabled",
+	"secretprovider_none_disabled": "None - disabled",
 	"secretprovider_none": "None",
 	"stacks_list_restart_stack": "Restart stack {name}",
 	"stacks_redeploy_header": "Redeploy stack {name}",
