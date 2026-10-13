@@ -5317,6 +5317,7 @@
             "bearerAuth": []
           }
         ],
+        "description": "Containers, images, volumes and networks are addressed by `id`; a STACK is addressed by `name`, because compose identifies a project by its name and GET /api/stacks returns no id. For a stack send the name in `name` - it is also accepted in `id`, which is what older callers did.",
         "requestBody": {
           "required": true,
           "content": {
@@ -5341,11 +5342,7 @@
                         "name": {
                           "type": "string"
                         }
-                      },
-                      "required": [
-                        "id",
-                        "name"
-                      ]
+                      }
                     }
                   },
                   "options": {
@@ -25296,6 +25293,9 @@
                     "latestVersion": {
                       "type": "string"
                     },
+                    "currentVersion": {
+                      "type": "string"
+                    },
                     "currentDigest": {
                       "type": "string"
                     },
@@ -25311,6 +25311,9 @@
                     "isLocalImage": {
                       "type": "boolean"
                     },
+                    "versionOnly": {
+                      "type": "boolean"
+                    },
                     "error": {
                       "type": "string"
                     }
@@ -25324,11 +25327,13 @@
                   "currentImage": "string",
                   "newImage": "string",
                   "latestVersion": "string",
+                  "currentVersion": "string",
                   "currentDigest": "string",
                   "newDigest": "string",
                   "containerName": "string",
                   "isComposeManaged": true,
                   "isLocalImage": true,
+                  "versionOnly": true,
                   "error": "string"
                 }
               }
@@ -25345,7 +25350,8 @@
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "description": "Where Dockhand can inspect its own container it compares the image and its digest. Where it cannot - Kubernetes, a plain Podman pod, bare metal - there is no image to read, so it falls back to comparing the build's own version against the newest release in the changelog and answers with versionOnly:true. That answer names no image and must not be offered as an update: such a deployment replaces the image through its own manifest."
       }
     },
     "/api/self-update/progress": {
