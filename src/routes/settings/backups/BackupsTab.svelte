@@ -458,7 +458,17 @@
 	}
 
 	const getTypeIcon = getRepoTypeIcon;
-	const getTypeLabel = getRepoTypeLabel;
+	/**
+	 * The repository's type for the grid. Only the two prose labels are translated -
+	 * S3, SFTP and the rest are product names. getRepoTypeLabel stays free of i18n so
+	 * server code can keep importing it.
+	 */
+	function getTypeLabel(repository: string): string {
+		const raw = getRepoTypeLabel(repository);
+		if (raw === 'Local') return m.settings_backups_repo_type_local();
+		if (raw === 'Unknown') return m.settings_backups_repo_type_unknown();
+		return raw;
+	}
 
 	function getUsageCount(destId: number): { containers: number; stacks: number } {
 		const related = configs.filter(c => c.destinationId === destId);
