@@ -277,6 +277,10 @@
 	let checkingUpdate = $state(false);
 	let updateCheckDone = $state(false);
 	let updateAvailable = $state(false);
+	/** The runtime could not be inspected, so the answer rests on the build version alone. */
+	let versionOnly = $state(false);
+	/** The newest released version, when only versions could be compared. */
+	let updateLatestVersion = $state('');
 	let updateInfo = $state<{
 		currentImage: string;
 		newImage: string;
@@ -294,6 +298,8 @@
 		checkingUpdate = true;
 		updateCheckDone = false;
 		updateAvailable = false;
+		versionOnly = false;
+		updateLatestVersion = '';
 		updateInfo = null;
 		updateCheckError = null;
 
@@ -312,6 +318,11 @@
 				return;
 			}
 
+			// Without a container runtime the check compares versions only: it can say
+			// a newer release exists, but not which image is running, and it must not
+			// offer an update Dockhand cannot apply here.
+			versionOnly = data.versionOnly === true;
+			updateLatestVersion = data.latestVersion ?? '';
 			updateAvailable = data.updateAvailable;
 			updateCheckDone = true;
 
@@ -501,10 +512,20 @@
 								<Loader2 class="w-3.5 h-3.5 animate-spin" />
 								{m.settings_about_checking_updates()}
 							</span>
+						{:else if updateAvailable && versionOnly}
+							<span class="flex items-center gap-1 text-xs text-amber-500" title={m.settings_about_update_version_only_hint()}>
+								<CircleArrowUp class="w-3.5 h-3.5" />
+								{m.settings_about_update_available_version({ version: updateLatestVersion })}
+							</span>
 						{:else if updateAvailable && updateInfo}
 							<button class="flex items-center gap-1 text-xs text-amber-500 hover:text-amber-400 transition-colors" onclick={() => showSelfUpdateDialog = true}>
 								<CircleArrowUp class="w-3.5 h-3.5" />
 								{m.settings_about_update_available()}
+							</button>
+						{:else if updateCheckDone && !updateAvailable && versionOnly}
+							<button class="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors" onclick={checkForUpdates} title={m.settings_about_update_version_only_hint()}>
+								<CheckCircle2 class="w-3.5 h-3.5" />
+								{m.settings_about_up_to_date_version({ version: updateLatestVersion })}
 							</button>
 						{:else if updateCheckDone && !updateAvailable}
 							<button class="flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 transition-colors" onclick={checkForUpdates}>
