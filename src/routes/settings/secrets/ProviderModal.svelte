@@ -33,6 +33,7 @@
 		{ value: 'proton', label: 'Proton Pass' },
 		{ value: 'azure-kv', label: 'Azure Key Vault' },
 		{ value: 'keepass', label: 'KeePassXC' },
+		{ value: 'psono', label: 'Psono' },
 	];
 
 	// Config fields per provider type, matching the config shapes in
@@ -82,6 +83,11 @@
 			{ key: 'clientId', get label() { return m.settings_secrets_field_azure_client_id(); }, type: 'text', required: true, get placeholder() { return m.settings_secrets_field_azure_client_id_placeholder(); }, get hint() { return m.settings_secrets_field_azure_client_id_hint(); } },
 			{ key: 'clientSecret', get label() { return m.settings_secrets_field_azure_client_secret(); }, type: 'password', required: true, get placeholder() { return m.settings_secrets_field_azure_client_secret_placeholder(); }, get hint() { return m.settings_secrets_field_azure_client_secret_hint(); } },
 		],
+		psono: [
+			{ key: 'serverUrl', get label() { return m.settings_secrets_field_psono_server_url(); }, type: 'text', required: true, placeholder: 'https://psono.example.com', get hint() { return m.settings_secrets_field_psono_server_url_hint(); } },
+			{ key: 'apiKeyId', get label() { return m.settings_secrets_field_psono_key_id(); }, type: 'text', required: true, placeholder: '00000000-0000-0000-0000-000000000000', get hint() { return m.settings_secrets_field_psono_key_id_hint(); } },
+			{ key: 'apiKeySecretKey', get label() { return m.settings_secrets_field_psono_key_secret(); }, type: 'password', required: true, get placeholder() { return m.settings_secrets_field_psono_key_secret_placeholder(); }, get hint() { return m.settings_secrets_field_psono_key_secret_hint(); } },
+		],
 		keepass: [
 			{ key: 'databasePath', get label() { return m.settings_secrets_field_keepass_database_path(); }, type: 'text', required: true, placeholder: '/secrets/passwords.kdbx', get hint() { return m.settings_secrets_field_keepass_database_path_hint(); } },
 			{ key: 'password', get label() { return m.settings_secrets_field_keepass_password(); }, type: 'password', required: false, requiredWhen: (c) => !(c.keyFilePath ?? '').trim(), get placeholder() { return m.settings_secrets_field_keepass_password_placeholder(); }, get hint() { return m.settings_secrets_field_keepass_password_hint(); } },
@@ -128,6 +134,11 @@
 			label: 'Key Vault',
 			get placeholder() { return m.settings_secrets_bulk_azure_placeholder(); },
 			get hint() { return m.settings_secrets_bulk_azure_hint(); }
+		},
+		'psono': {
+			get label() { return m.settings_secrets_bulk_psono_label(); },
+			get placeholder() { return m.settings_secrets_bulk_psono_placeholder(); },
+			get hint() { return m.settings_secrets_bulk_psono_hint(); }
 		},
 		'keepass': {
 			get label() { return m.settings_secrets_bulk_keepass_label(); },
@@ -303,7 +314,15 @@
 			}
 			const data = await response.json();
 			if (data.ok) {
-				toast.success(m.settings_secrets_toast_connection_works());
+				// A warning means the connection works but the credential is wider than
+				// Dockhand needs; it must not read as a failure, so it stays a success
+				// toast and the detail goes in the form where it can be read at leisure.
+				if (data.warning) {
+					toast.warning(data.warning, { duration: 10000 });
+					formError = data.warning;
+				} else {
+					toast.success(m.settings_secrets_toast_connection_works());
+				}
 				clearTimeout(testOkTimer);
 				testOk = true;
 				testOkTimer = setTimeout(() => (testOk = false), 2000);
@@ -463,6 +482,26 @@
 					</div>
 				{/each}
 			</div>
+			{#if formType === 'psono'}
+				<!-- Not the external-CLI note below: Psono is REST. What matters here is the
+				     shape of the API key, since an over-privileged one reaches the whole vault. -->
+				<p class="flex items-start gap-2 text-xs text-muted-foreground">
+					<Info class="h-3.5 w-3.5 shrink-0 mt-0.5 text-amber-500" />
+					<span>
+						<!-- No whitespace between the fragments: each translation carries its own
+						     leading space, since CJK runs punctuation straight onto the label. -->
+						{m.settings_secrets_psono_note_before()}<strong
+							>{m.settings_secrets_psono_note_api_keys()}</strong
+						>{m.settings_secrets_psono_note_with()}<strong
+							>{m.settings_secrets_psono_note_restrict()}</strong
+						>{m.settings_secrets_psono_note_on_and()}<strong
+							>{m.settings_secrets_psono_note_insecure()}</strong
+						>{m.settings_secrets_psono_note_off()}<code
+							>psono://&lt;secret-id&gt;/&lt;field&gt;</code
+						>{m.settings_secrets_psono_note_after()}
+					</span>
+				</p>
+			{/if}
 			{#if formType === 'bitwarden' || formType === 'proton' || formType === 'keepass'}
 				<!-- Fixed min-height so switching between the bitwarden (shorter) and proton
 				     (taller) external-CLI notes doesn't jump the dialog's vertical size. -->
