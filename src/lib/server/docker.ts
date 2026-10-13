@@ -4495,9 +4495,9 @@ export async function getDockerVersion(envId?: number | null) {
  * Used to pin DOCKER_API_VERSION when spawning sidecar containers (scanner, updater)
  * whose bundled Docker CLI may be newer than the host daemon supports.
  * Returns null if the version cannot be determined.
- * Requires an envId — local Docker (no environment) must query /version directly.
+ * Omitting envId asks the local daemon, the same way getDockerVersion does.
  */
-export async function getNegotiatedApiVersion(envId: number): Promise<string | null> {
+export async function getNegotiatedApiVersion(envId?: number | null): Promise<string | null> {
 	try {
 		const versionInfo = await getDockerVersion(envId);
 		return versionInfo?.ApiVersion || null;
