@@ -6,6 +6,7 @@
 
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { filterByAccessibleEnv } from '$lib/server/env-scope-filter';
 import {
 	getEnabledAutoUpdateSettings,
 	getEnabledAutoUpdateGitStacks,
@@ -406,10 +407,7 @@ export const GET: RequestHandler = async ({ cookies }) => {
 		// Free edition / admin: getAccessibleEnvironmentIds returns null,
 		// no filtering applied.
 		const accessibleEnvIds = await auth.getAccessibleEnvironmentIds();
-		const filtered = accessibleEnvIds === null
-			? schedules
-			: schedules.filter(s =>
-				s.environmentId === null || accessibleEnvIds.includes(s.environmentId));
+		const filtered = filterByAccessibleEnv(schedules, accessibleEnvIds);
 
 		// Sort: system jobs last, then by name
 		filtered.sort((a, b) => {
