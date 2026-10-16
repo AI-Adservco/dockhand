@@ -9,6 +9,7 @@
 	import { type EnvVar, type ValidationResult } from '$lib/components/StackEnvVarsEditor.svelte';
 	import SecretProviderPicker from '$lib/components/SecretProviderPicker.svelte';
 	import { SELECTOR_VARS } from '$lib/utils/bulk-selector';
+	import { parseEnvFileForForm } from '$lib/utils/env-file-values';
 	import { classifyMarker, isInlineProviderRef, resolvedRefVarNames } from '$lib/utils/invault-markers';
 	import { applyQuickFix, findingKey } from '$lib/utils/compose-quick-fix';
 	import { Layers, Save, Play, Code, GitGraph, GitBranch, GitCommitHorizontal, Github, Loader2, AlertCircle, X, Sun, Moon, TriangleAlert, GripVertical, GripHorizontal, FolderOpen, Copy, Check, XCircle, MapPin, ArrowRight, ArrowDown, Info, Box, FolderSync, Archive, ListChecks, History, ChevronDown } from 'lucide-svelte';
@@ -19,7 +20,7 @@
 	import { deployTallyFromRuns } from '$lib/utils/deploy-run-view';
 	import { volumesForStack, type VolumeInfo } from '$lib/utils/mounts';
 	import { fetchBackupExecutions } from '$lib/utils/backup';
-	import type { Component } from 'svelte';
+	import type { IconComponent } from '$lib/types';
 	import FilesystemBrowser from './FilesystemBrowser.svelte';
 	import DetectedComposeFile from './DetectedComposeFile.svelte';
 	import { canAccess } from '$lib/stores/auth';
@@ -586,7 +587,7 @@
 	let showFileBrowser = $state(false);
 	let fileBrowserConfig = $state<{
 		title: string;
-		icon?: Component<{ class?: string }>;
+		icon?: IconComponent;
 		selectFilter?: RegExp;
 		selectMode: 'file' | 'directory' | 'file_or_directory';
 		onSelect: (path: string, name: string) => void;
@@ -854,19 +855,7 @@
 
 	// Parse env vars from raw content
 	function parseEnvVarsFromRaw(content: string) {
-		const vars: EnvVar[] = [];
-		const lines = content.split('\n');
-		for (const line of lines) {
-			const trimmed = line.trim();
-			if (!trimmed || trimmed.startsWith('#')) continue;
-			const eqIndex = trimmed.indexOf('=');
-			if (eqIndex > 0) {
-				const key = trimmed.substring(0, eqIndex);
-				const value = trimmed.substring(eqIndex + 1);
-				vars.push({ key, value, isSecret: false });
-			}
-		}
-		envVars = vars;
+		envVars = parseEnvFileForForm(content).map((row) => ({ ...row, isSecret: false }));
 	}
 
 	// Handle compose file selection from browser
@@ -2473,19 +2462,12 @@
 								<PathBarItem
 									label={m.stacks_modal_env_file()}
 									path={displayEnvPath || null}
-									selectedPath={workingEnvPath || suggestedEnvPath || ''}
 									placeholder={m.stacks_modal_env_path_placeholder()}
 									copied={envPathCopied}
 									onCopy={() => copyText(displayEnvPath, (v) => envPathCopied = v)}
 									onBrowse={readonly ? undefined : openEnvBrowser}
-									isEditable={!readonly}
-									isCustom={!!workingEnvPath}
 									defaultText={mode === 'create' ? m.stacks_modal_path_enter_name_above() : m.stacks_modal_path_not_specified()}
 									isSuggested={isEnvPathSuggested}
-									onPathChange={(value) => {
-										workingEnvPath = value;
-										isDirty = true;
-									}}
 								/>
 							</div>
 							<!-- Theme toggle -->
