@@ -162,6 +162,7 @@
 	"dashboard_containers_restarting": "Restartujące się",
 	"dashboard_containers_unhealthy": "Niezdrowe",
 	"dashboard_containers_pending_updates": "Oczekujące aktualizacje",
+	"dashboard_containers_pinned_digest": "Przypięty digest się zmienił",
 	"dashboard_containers_running_title": "Uruchomione kontenery",
 	"dashboard_containers_stopped_title": "Zatrzymane kontenery",
 	"dashboard_containers_paused_title": "Wstrzymane kontenery",
@@ -486,6 +487,8 @@
 	"containers_list_hawser_update_instructions": "Instrukcje aktualizacji na GitHubie",
 	"containers_list_update_click_title": "Dostępna aktualizacja - kliknij, aby zaktualizować",
 	"containers_list_view_changelog": "Zobacz listę zmian",
+	"containers_list_pinned_digest_heading": "Przypięty do digestu",
+	"containers_list_pinned_digest_title": "Tag wskazuje teraz inny digest, ale ten obraz jest przypięty do starego - zaktualizuj digest w pliku compose, aby go pobrać",
 	"containers_list_update_held_title": "Aktualizacja wstrzymana: pozostało {count} godz. minimalnego wieku obrazu",
 	"containers_list_update_check_failed": "Sprawdzenie aktualizacji nie udało się",
 	"containers_list_registry_query_failed": "Nie udało się zapytać rejestru",
@@ -1610,6 +1613,7 @@
 			}
 		}
 	],
+	"updates_pinned_digest_short": "{count} przypiętych digestem",
 	"updates_cooling_down_short": "{count} czeka",
 	"updates_check_title": "Sprawdź dostępne aktualizacje",
 	"updates_checking_progress": "Sprawdzanie {checked}/{total}",
@@ -1638,6 +1642,7 @@
 	"updates_no_source_after": "wskazującej repozytorium GitHub lub Gitea/Forgejo).",
 	"updates_notes_from": "Informacje z",
 	"tags_filter_all": "Wszystkie tagi",
+	"tags_filter_untagged": "Bez tagu",
 	"tags_filter_count": [
 		{
 			"declarations": [
@@ -3066,7 +3071,7 @@
 	"stacks_git_repull_images_hint_before": "Zawsze pobieraj najnowsze obrazy przed wdrożeniem, nawet jeśli plik compose się nie zmienił. Przydatne przy CI/CD ze stałymi tagami, takimi jak",
 	"stacks_git_repull_images_hint_after": ".",
 	"stacks_git_force_redeploy": "Wymuś ponowne wdrożenie",
-	"stacks_git_force_redeploy_hint": "Zawsze wdrażaj stack ponownie przy webhooku albo synchronizacji zaplanowanej, nawet gdy nie wykryto zmian w Gicie.",
+	"stacks_git_force_redeploy_hint": "Zawsze wdrażaj stack ponownie przy webhooku albo synchronizacji zaplanowanej, nawet gdy nie wykryto zmian w Gicie. Wymusza pełne odtworzenie wszystkich kontenerów; bez tego wdrożenie odtwarza tylko usługi, których konfiguracja się zmieniła.",
 	"stacks_git_deploy_now": "Wdróż teraz",
 	"stacks_git_deploy_now_hint": "Sklonuj i wdróż stack od razu",
 	"stacks_git_env_info_storage_before": "Nadpisz zmienne z plików env w repozytorium. Zmienne niebędące sekretami są zapisywane w pliku",
@@ -3459,6 +3464,8 @@
 	],
 	"stackenv_injected_from": "z",
 	"stackenv_injected_the_provider": "dostawcy",
+	"stackenv_injected_show": "Pokaż",
+	"stackenv_injected_hide": "Ukryj",
 	"stackenv_injected_detail_before": "Wstrzyknięte do kontenera przy ostatnim wdrożeniu - nigdy nie zapisane w",
 	"stackenv_injected_detail_after": ".",
 	"stackenv_unbound_title": "Nie podłączono dostawcy sekretów",
@@ -6539,6 +6546,8 @@
 	"settings_git_test_connection": "Testuj połączenie",
 	"settings_git_item_repository": "repozytorium",
 	"settings_git_delete": "Usuń",
+	"settings_git_checking_stacks": "Sprawdzanie, które stacki używają tego repozytorium...",
+	"settings_git_delete_affects_stacks": [{"declarations": ["input count", "local countPlural = count: plural"], "selectors": ["countPlural"], "match": {"countPlural=one": "Usunięcie tego repozytorium dotyczy {count} stacka:", "countPlural=few": "Usunięcie tego repozytorium dotyczy {count} stacków:", "countPlural=many": "Usunięcie tego repozytorium dotyczy {count} stacków:", "countPlural=other": "Usunięcie tego repozytorium dotyczy {count} stacka:"}}],
 	"settings_git_error_url_required_to_test": "Do testu wymagany jest adres URL repozytorium",
 	"settings_git_test_success_detail": "Połączenie udane! Branch: {branch}, commit: {commit}",
 	"settings_git_connection_test_failed": "Test połączenia nieudany",

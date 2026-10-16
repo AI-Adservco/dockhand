@@ -160,6 +160,7 @@
 	"dashboard_containers_restarting": "重启中",
 	"dashboard_containers_unhealthy": "不健康",
 	"dashboard_containers_pending_updates": "待处理更新",
+	"dashboard_containers_pinned_digest": "固定摘要已变更",
 	"dashboard_containers_running_title": "运行中的容器",
 	"dashboard_containers_stopped_title": "已停止的容器",
 	"dashboard_containers_paused_title": "已暂停的容器",
@@ -464,6 +465,8 @@
 	"containers_list_hawser_update_instructions": "GitHub 上的更新说明",
 	"containers_list_update_click_title": "有可用更新 - 点击更新",
 	"containers_list_view_changelog": "查看更新日志",
+	"containers_list_pinned_digest_heading": "已锁定到摘要",
+	"containers_list_pinned_digest_title": "标签已指向新摘要，但此镜像仍锁定在旧摘要上 - 请更新 compose 文件中的摘要以拉取",
 	"containers_list_update_held_title": "更新暂缓:距镜像最小存在时间还剩 {count} 小时",
 	"containers_list_update_check_failed": "更新检查失败",
 	"containers_list_registry_query_failed": "无法查询镜像仓库",
@@ -1554,6 +1557,7 @@
 			}
 		}
 	],
+	"updates_pinned_digest_short": "{count} 个按摘要锁定",
 	"updates_cooling_down_short": "{count} 个冷却中",
 	"updates_check_title": "检查可用更新",
 	"updates_checking_progress": "正在检查 {checked}/{total}",
@@ -1582,6 +1586,7 @@
 	"updates_no_source_after": "标签，指向 GitHub 或 Gitea/Forgejo 仓库）。",
 	"updates_notes_from": "备注来自",
 	"tags_filter_all": "全部标签",
+	"tags_filter_untagged": "无标签",
 	"tags_filter_count": [
 		{
 			"declarations": [
@@ -2670,7 +2675,7 @@
 	"stacks_git_repull_images_hint_before": "部署前始终拉取最新镜像，即使 compose 文件没有变化。适用于使用静态标签的 CI/CD 工作流，例如",
 	"stacks_git_repull_images_hint_after": "。",
 	"stacks_git_force_redeploy": "强制重新部署",
-	"stacks_git_force_redeploy_hint": "在 webhook 或计划同步时始终重新部署堆栈，即使未检测到 git 变更。",
+	"stacks_git_force_redeploy_hint": "在 webhook 或计划同步时始终重新部署堆栈，即使未检测到 git 变更。 它会强制重新创建所有容器；不启用时，部署只会重新创建配置发生变化的服务。",
 	"stacks_git_deploy_now": "立即部署",
 	"stacks_git_deploy_now_hint": "克隆并立即部署堆栈",
 	"stacks_git_env_info_storage_before": "覆盖仓库 env 文件中的变量。非机密变量保存到",
@@ -3043,6 +3048,8 @@
 	],
 	"stackenv_injected_from": "从",
 	"stackenv_injected_the_provider": "该提供者",
+	"stackenv_injected_show": "显示",
+	"stackenv_injected_hide": "隐藏",
 	"stackenv_injected_detail_before": "在最近部署时注入容器——从不写入",
 	"stackenv_injected_detail_after": "。",
 	"stackenv_unbound_title": "未绑定密钥提供商",
@@ -6258,6 +6265,8 @@
 	"settings_git_test_connection": "测试连接",
 	"settings_git_item_repository": "仓库",
 	"settings_git_delete": "删除",
+	"settings_git_checking_stacks": "正在检查哪些堆栈使用此仓库...",
+	"settings_git_delete_affects_stacks": [{"declarations": ["input count", "local countPlural = count: plural"], "selectors": ["countPlural"], "match": {"countPlural=one": "删除此仓库会影响 {count} 个堆栈：", "countPlural=other": "删除此仓库会影响 {count} 个堆栈："}}],
 	"settings_git_error_url_required_to_test": "测试前必须填写仓库 URL",
 	"settings_git_test_success_detail": "连接成功!分支:{branch},提交:{commit}",
 	"settings_git_connection_test_failed": "连接测试失败",

@@ -17,7 +17,7 @@ import { pumpWebStreamToWritable } from './stream-pump';
 import { toWebReadableStream } from './node-readable-stream';
 import { buildImagePruneFilters } from './image-prune-core';
 import { demuxDockerStream } from './docker-demux-core';
-import { isDockerProbePath, isDockerNetworkError } from './docker-probe-core';
+import { isExpectedConnectionError, isQuietDockerFailure, transportTimeoutError } from './docker-probe-core';
 import {
 	computeRequestTimeoutMs,
 	isPrunePath,
@@ -32,7 +32,9 @@ import { mapContainerNetworks } from '$lib/utils/network-identity';
 import type { Environment } from './db';
 import { getSetting } from './db';
 import { releaseAgeAdvisory } from './release-age-advisory';
-import { portableImageReference, trackedImageLabels, trackedImageReference } from '../utils/tracked-image';
+import { imageCheckPlan, resolvePinnedToDigest, isDigestBasedImage, portableImageReference, trackedImageLabels, trackedImageReference } from '../utils/tracked-image';
+// Re-exported: the updaters import it from here, and it belongs beside imagePinning.
+export { isDigestBasedImage };
 import { getMinimumReleaseAgeConfig, imageReleaseAgeRemainingMs, imageReleaseAgeStatus, type ImageCreationMetadata } from './minimum-release-age';
 import { manualPullAgeWarning, verifiedImagePullPlan } from './minimum-release-age-core';
 import { getAdditionalVolumeBinds, dedupeVolumesForRecreate } from './mount-dedupe';
@@ -54,7 +56,7 @@ import {
 	type RegistryPorts
 } from './registry/manifest-digest';
 import { classifyManifest, type ArtifactKind } from './semver/manifest-artifact';
-import { isSystemContainer, classifyEmptyDigestImage, localDigestIsIndexChild, indexChildDigests } from './scheduler/tasks/update-utils';
+import { isSystemContainer, classifyEmptyDigestImage, localDigestIsIndexChild, indexChildDigests, samePlatformImage } from './scheduler/tasks/update-utils';
 import { deepDiff } from '../utils/diff.js';
 import { getInstanceId } from './backups/identity';
 import { isOwnedBackupHelper } from './backups/reap-core';
@@ -434,7 +436,7 @@ export function httpsAgentRequest(
 		// Honor AbortSignal from caller (e.g., AbortSignal.timeout(5000) for ping)
 		const signal = options.signal as AbortSignal | undefined;
 		if (signal?.aborted) {
-			reject(new Error('Request aborted'));
+			reject(transportTimeoutError('Request aborted'));
 			return;
 		}
 
@@ -474,11 +476,11 @@ export function httpsAgentRequest(
 		});
 
 		req.on('error', reject);
-		req.on('timeout', () => { req.destroy(new Error('Request timeout')); });
+		req.on('timeout', () => { req.destroy(transportTimeoutError('Request timeout')); });
 
 		if (signal) {
 			signal.addEventListener('abort', () => {
-				req.destroy(new Error('Request aborted'));
+				req.destroy(transportTimeoutError('Request aborted'));
 			}, { once: true });
 		}
 
@@ -824,9 +826,12 @@ function logDockerFetchFailure(
 	msg: string,
 	error: unknown
 ) {
-	// For probing endpoints failing with expected network reachability errors (e.g. host is powered off),
-	// downgrade to debug/warn to avoid error log flooding (#1739).
-	if (isDockerProbePath(path) && isDockerNetworkError(error)) {
+	// A probe that cannot reach an offline host says nothing a reader needs: the
+	// environment already shows as offline, and the attempt repeats every cycle. It stays
+	// in the log on stdout rather than as an error, so a log collector filtering on stderr
+	// is not flooded. A probe failing for any OTHER reason - a bad token, an expired
+	// certificate - is still an error, because that one needs acting on.
+	if (isQuietDockerFailure(path, error)) {
 		console.debug(`[Docker] ${targetLabel}: ${method} ${path} probe failed after ${elapsed}ms (host offline/unreachable): ${msg}`);
 	} else {
 		console.error(`[Docker] ${targetLabel}: ${method} ${path} failed after ${elapsed}ms: ${msg}`);
@@ -3460,8 +3465,17 @@ export async function getImageHistory(id: string, envId?: number | null) {
 	return dockerJsonRequest(`/images/${encodeURIComponent(id)}/history`, {}, envId);
 }
 
+/** The fields callers read off an image inspect. */
+export interface ImageInspect {
+	Id: string;
+	RepoTags?: string[] | null;
+	RepoDigests?: string[] | null;
+	Created?: string;
+	Config?: ImageEnvLabels;
+}
+
 export async function inspectImage(id: string, envId?: number | null) {
-	return dockerJsonRequest(`/images/${encodeURIComponent(id)}/json`, {}, envId);
+	return dockerJsonRequest<ImageInspect>(`/images/${encodeURIComponent(id)}/json`, {}, envId);
 }
 
 /**
@@ -4148,49 +4162,74 @@ export async function getTagArtifactKind(
 	}
 }
 
+/** Fetch a manifest/index body by tag or digest. Null on any failure; never throws. */
+async function fetchManifestBody(
+	registry: string,
+	repo: string,
+	reference: string,
+	token: string | null,
+	scheme: string
+): Promise<unknown | null> {
+	const headers: Record<string, string> = {
+		'User-Agent': 'Dockhand/1.0',
+		'Accept': [
+			'application/vnd.docker.distribution.manifest.list.v2+json',
+			'application/vnd.oci.image.index.v1+json'
+		].join(', ')
+	};
+	if (token) headers['Authorization'] = token;
+	const response = await fetch(`${scheme}://${registry}/v2/${repo}/manifests/${reference}`, {
+		method: 'GET',
+		headers,
+		signal: AbortSignal.timeout(8000)
+	});
+	if (!response.ok) {
+		await drainResponse(response);
+		return null;
+	}
+	return response.json();
+}
+
 /**
- * A multi-arch tag is a manifest list / OCI image index: the list has one digest,
- * and each per-architecture child manifest has its own. `docker pull` usually records
- * the INDEX digest in RepoDigests, but some pulls leave only the PER-ARCH child digest.
- * getRegistryManifestDigest() (a HEAD) always returns the index digest, so a local
- * per-arch digest never matches it -> phantom "update available" (#1367).
- *
- * Fetches the index body and returns true if any local digest is one of its per-arch
- * child digests (same image, just recorded per-arch). Best-effort: ANY failure
- * (network, timeout, non-index body, unauthenticated) returns false so the caller
- * keeps its existing "update available" verdict. NEVER throws, own short timeout, and
- * runs ONLY on the already-flagged-as-update path - it can't slow or break the common
- * case. A false "update available" is acceptable; breaking the check is not.
+ * Rule out a multi-arch false positive after the index digest did not match any local
+ * digest. Two shapes, both resolved from the registry's CURRENT index for the tag:
+ *  - the local image recorded a per-arch CHILD of the current index, or
+ *  - the local image recorded an OLD index whose entry for the daemon's platform is the
+ *    SAME image as the new index's entry - the tag was republished with only another
+ *    architecture or the attestations changed.
+ * Best-effort: ANY failure (network, non-index, unauthenticated) returns false so the
+ * caller keeps its "update available" verdict. Never throws; own short timeouts; runs
+ * only on the already-flagged path.
  */
-async function localDigestMatchesRegistryChild(
+async function localImageMatchesRegistry(
 	imageName: string,
-	localDigests: string[]
+	localDigests: string[],
+	envId?: number | null
 ): Promise<boolean> {
 	try {
 		const { registry, repo, tag } = parseImageReference(imageName);
 		if (!isSafeRegistryHost(registry).ok) return false;
 		const token = await getRegistryBearerToken(registry, repo);
 		const scheme = await getRegistrySchemeForHost(registry);
-		const headers: Record<string, string> = {
-			'User-Agent': 'Dockhand/1.0',
-			'Accept': [
-				'application/vnd.docker.distribution.manifest.list.v2+json',
-				'application/vnd.oci.image.index.v1+json'
-			].join(', ')
-		};
-		if (token) headers['Authorization'] = token;
 
-		const response = await fetch(`${scheme}://${registry}/v2/${repo}/manifests/${tag}`, {
-			method: 'GET',
-			headers,
-			signal: AbortSignal.timeout(8000)
-		});
-		if (!response.ok) {
-			await drainResponse(response);
-			return false;
+		const registryIndex = await fetchManifestBody(registry, repo, tag, token, scheme);
+		if (registryIndex === null) return false;
+
+		// Local per-arch child of the current index.
+		if (localDigestIsIndexChild(localDigests, registryIndex)) return true;
+
+		// Local digest is an OLD index; compare the daemon-platform entry of both.
+		// Only worth the /info and the extra manifest reads when the registry side is
+		// actually a multi-arch index - a single-arch tag has no platform entry to compare.
+		if (indexChildDigests(registryIndex).length === 0) return false;
+		const info = await dockerJsonRequest('/info', { signal: AbortSignal.timeout(8000) }, envId) as { OSType?: string; Architecture?: string };
+		const platform = imagePlatform(info?.OSType, info?.Architecture);
+		if (!platform) return false;
+		for (const localDigest of localDigests) {
+			const localIndex = await fetchManifestBody(registry, repo, localDigest, token, scheme);
+			if (localIndex && samePlatformImage(localIndex, registryIndex, platform)) return true;
 		}
-		const body: unknown = await response.json();
-		return localDigestIsIndexChild(localDigests, body);
+		return false;
 	} catch {
 		return false;
 	}
@@ -4209,6 +4248,13 @@ export interface ImageUpdateCheckResult {
 	/** The running image's RepoDigests (sha256:...), for the semver check to suppress
 	 *  a newer-version tag that resolves to the same digest already installed (#1572). */
 	localDigests?: string[];
+	/**
+	 * The reference names a tag AND the digest behind it (`repo:tag@sha256:...`), so a
+	 * moved digest is reported but never applied: pulling that reference returns the
+	 * pinned manifest, and following the tag instead would rewrite a digest the user put
+	 * in their compose on purpose. Updating it is their edit to make.
+	 */
+	pinnedToDigest?: boolean;
 }
 
 /**
@@ -4225,15 +4271,28 @@ export async function checkImageUpdateAvailable(
 	currentImageId: string,
 	envId?: number
 ): Promise<ImageUpdateCheckResult> {
+	// A digest with no tag names one manifest, so there is nothing to follow. A tag that
+	// records its digest - the shape a base image patched for a CVE takes - is checked by
+	// its TAG. `pinnedToDigest` is set ONLY when that check found a move (hasUpdate): it
+	// means "a newer digest exists but the compose pins the old one", so the caller
+	// reports the move without applying it. A pinned tag whose digest has NOT moved is
+	// simply up to date and carries no flag, so the pin marker and the update counters
+	// never fire on a quiet pin.
+	const plan = imageCheckPlan(imageName);
+	if (plan.skip) {
+		return { hasUpdate: false, currentDigest: imageName.split('@')[1] };
+	}
+	const result = await checkTagForUpdate(plan.reference, currentImageId, envId);
+	return resolvePinnedToDigest(plan, result.hasUpdate) ? { ...result, pinnedToDigest: true } : result;
+}
+
+async function checkTagForUpdate(
+	checkedReference: string,
+	currentImageId: string,
+	envId?: number
+): Promise<ImageUpdateCheckResult> {
+	const imageName = checkedReference;
 	try {
-		// Skip update check for digest-pinned images
-		// If the user explicitly pins to a digest (image@sha256:...), they don't want auto-updates
-		if (isDigestBasedImage(imageName)) {
-			return {
-				hasUpdate: false,
-				currentDigest: imageName.split('@')[1] // Extract the digest part
-			};
-		}
 
 		// Skip update check for images tagged against a localhost registry.
 		// These never resolve from inside Dockhand's container and only produce
@@ -4281,17 +4340,17 @@ export async function checkImageUpdateAvailable(
 		// a digest we don't have, an update is available. If the registry can't
 		// resolve it (404 / unreachable / truly local), THEN treat it as local.
 		if (localDigests.length === 0) {
-			const registryDigest = await getRegistryManifestDigest(imageName, envId);
+			const registryDigest = await getRegistryManifestDigest(checkedReference, envId);
 			const { hasUpdate, isLocalImage, registryDigest: rd } = classifyEmptyDigestImage(registryDigest);
 			if (hasUpdate && rd) {
-				const remaining = await imageCooldownRemainingMs(imageName, rd, envId);
+				const remaining = await imageCooldownRemainingMs(checkedReference, rd, envId);
 				if (remaining > 0) return { hasUpdate: false, currentDigest: currentImageId, registryDigest: rd, releaseAgeRemainingHours: Math.ceil(remaining / 3600000) };
 			}
 			return { hasUpdate, isLocalImage, currentDigest: currentImageId, registryDigest: rd };
 		}
 
 		// Query registry for current manifest digest
-		const { digest: registryDigest, reason: registryFailure } = await getRegistryManifestDigestDetailed(imageName, envId);
+		const { digest: registryDigest, reason: registryFailure } = await getRegistryManifestDigestDetailed(checkedReference, envId);
 
 		if (!registryDigest) {
 			// Registry unreachable or image not found - can't determine update status.
@@ -4311,13 +4370,14 @@ export async function checkImageUpdateAvailable(
 		}
 
 		// The HEAD digest (always the manifest-list/index digest) didn't match. Before
-		// declaring an update, rule out the multi-arch false positive: a local per-arch
-		// child digest won't equal the index digest even when the image is current
-		// (#1367). Best-effort GET of the index; on any failure hasUpdate stays true.
-		if (await localDigestMatchesRegistryChild(imageName, localDigests)) {
+		// declaring an update, rule out the multi-arch false positives: a local per-arch
+		// child digest never equals the index digest, and an index that moved while the
+		// daemon-platform image stayed the same is not an update either. Both are
+		// best-effort registry reads; on any failure hasUpdate stays true.
+		if (await localImageMatchesRegistry(imageName, localDigests, envId)) {
 			return { hasUpdate: false, currentDigest: currentRepoDigests[0], localDigests };
 		}
-		const remaining = await imageCooldownRemainingMs(imageName, registryDigest, envId);
+		const remaining = await imageCooldownRemainingMs(checkedReference, registryDigest, envId);
 		if (remaining > 0) {
 			return { hasUpdate: false, currentDigest: currentRepoDigests[0], registryDigest, localDigests, releaseAgeRemainingHours: Math.ceil(remaining / 3600000) };
 		}
@@ -4383,14 +4443,6 @@ export function getTempImageTag(imageName: string): string {
 	const tag = afterColon;
 
 	return `${repo}:${tag}-dockhand-pending`;
-}
-
-/**
- * Check if an image name is using a digest (sha256) instead of a tag.
- * Digest-based images don't need temp tag handling.
- */
-export function isDigestBasedImage(imageName: string): boolean {
-	return imageName.includes('@sha256:');
 }
 
 /**
@@ -5792,7 +5844,13 @@ export async function runContainerWithStreaming(options: {
 				}
 				const detail = helperFailureDetail({ stderr: stderrText, stdout, daemonError });
 				const code = exitCode === undefined ? 'unknown (could not determine container exit status)' : String(exitCode);
-				throw new Error(`Container exited with code ${code}: ${detail}`);
+				// The message is truncated for display, but carry the FULL stderr/stdout so a
+				// caller can classify on it: a scanner's "blob not found in tar" line (the
+				// registry-fallback signal) often lands after the truncation point.
+				throw Object.assign(new Error(`Container exited with code ${code}: ${detail}`), {
+					stderr: stderrText,
+					stdout
+				});
 			}
 
 			return stdout;
@@ -6866,8 +6924,7 @@ async function cleanupStaleVolumeHelpersForEnv(envId?: number | null): Promise<n
 	} catch (err: any) {
 		// Don't spam logs for expected connection failures (offline envs, TLS mismatches, etc.)
 		const msg = err?.message || String(err);
-		const isExpected = /not connected|offline|unreachable|fetch failed|EPROTO|ECONNREFUSED|ECONNRESET|ETIMEDOUT|EHOSTUNREACH/i.test(msg);
-		if (!isExpected) {
+		if (!isExpectedConnectionError(err)) {
 			console.warn(`Failed to query stale volume helpers for env ${envId}:`, msg);
 		}
 		return 0;
@@ -6916,8 +6973,7 @@ async function cleanupStaleBackupHelpersForEnv(myInstance: string, envId?: numbe
 	} catch (err: any) {
 		// Don't spam logs for expected connection failures (offline envs, TLS mismatches, etc.)
 		const msg = err?.message || String(err);
-		const isExpected = /not connected|offline|unreachable|fetch failed|EPROTO|ECONNREFUSED|ECONNRESET|ETIMEDOUT|EHOSTUNREACH/i.test(msg);
-		if (!isExpected) {
+		if (!isExpectedConnectionError(err)) {
 			console.warn(`Failed to query orphan backup helpers for env ${envId}:`, msg);
 		}
 		return 0;

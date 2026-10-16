@@ -160,6 +160,7 @@
 	"dashboard_containers_restarting": "Startet neu",
 	"dashboard_containers_unhealthy": "Ungesund",
 	"dashboard_containers_pending_updates": "Ausstehende Updates",
+	"dashboard_containers_pinned_digest": "Angehefteter Digest verschoben",
 	"dashboard_containers_running_title": "Laufende Container",
 	"dashboard_containers_stopped_title": "Gestoppte Container",
 	"dashboard_containers_paused_title": "Pausierte Container",
@@ -506,6 +507,8 @@
 	"containers_list_hawser_update_instructions": "Update-Anleitung auf GitHub",
 	"containers_list_update_click_title": "Update verfügbar - zum Aktualisieren klicken",
 	"containers_list_view_changelog": "Changelog anzeigen",
+	"containers_list_pinned_digest_heading": "Auf einen Digest gepinnt",
+	"containers_list_pinned_digest_title": "Der Tag zeigt auf einen neuen Digest, dieses Image ist aber auf den alten gepinnt - aktualisiere den Digest in deiner Compose-Datei, um ihn zu laden",
 	"containers_list_update_held_title": [
 		{
 			"declarations": [
@@ -1668,6 +1671,7 @@
 			}
 		}
 	],
+	"updates_pinned_digest_short": "{count} per Digest gepinnt",
 	"updates_cooling_down_short": "{count} zurückgehalten",
 	"updates_check_title": "Nach verfügbaren Updates suchen",
 	"updates_checking_progress": "Prüfe {checked}/{total}",
@@ -2855,7 +2859,7 @@
 	"stacks_git_repull_images_hint_before": "Pullt vor dem Bereitstellen immer die neuesten Images, auch wenn sich die Compose-Datei nicht geändert hat. Nützlich für CI/CD-Workflows mit statischen Tags wie",
 	"stacks_git_repull_images_hint_after": ".",
 	"stacks_git_force_redeploy": "Neubereitstellung erzwingen",
-	"stacks_git_force_redeploy_hint": "Stellt den Stack bei Webhook oder geplanter Synchronisierung immer neu bereit, auch wenn keine Git-Änderungen erkannt werden.",
+	"stacks_git_force_redeploy_hint": "Stellt den Stack bei Webhook oder geplanter Synchronisierung immer neu bereit, auch wenn keine Git-Änderungen erkannt werden. Erzwingt eine vollständige Neuerstellung aller Container; ohne diese Option werden beim Deploy nur die Dienste neu erstellt, deren Konfiguration sich geändert hat.",
 	"stacks_git_deploy_now": "Jetzt bereitstellen",
 	"stacks_git_deploy_now_hint": "Stack sofort klonen und bereitstellen",
 	"stacks_git_env_info_storage_before": "Überschreibe Variablen aus den Env-Dateien deines Repositorys. Nicht geheime Werte werden in",
@@ -3228,6 +3232,8 @@
 	],
 	"stackenv_injected_from": "aus",
 	"stackenv_injected_the_provider": "dem Provider",
+	"stackenv_injected_show": "Anzeigen",
+	"stackenv_injected_hide": "Ausblenden",
 	"stackenv_injected_detail_before": "Beim letzten Bereitstellen in den Container eingespeist - nie in",
 	"stackenv_injected_detail_after": " geschrieben.",
 	"stackenv_unbound_title": "Kein Secret-Provider verknüpft",
@@ -6548,21 +6554,7 @@
 	"settings_git_item_repository": "Repository",
 	"settings_git_delete": "Löschen",
 	"settings_git_checking_stacks": "Es wird geprüft, welche Stacks dieses Repository verwenden…",
-	"settings_git_delete_affects_stacks": [
-		{
-			"declarations": [
-				"input count",
-				"local countPlural = count: plural"
-			],
-			"selectors": [
-				"countPlural"
-			],
-			"match": {
-				"countPlural=one": "Das Löschen dieses Repositorys betrifft {count} Stack:",
-				"countPlural=other": "Das Löschen dieses Repositorys betrifft {count} Stacks:"
-			}
-		}
-	],
+	"settings_git_delete_affects_stacks": [{"declarations": ["input count", "local countPlural = count: plural"], "selectors": ["countPlural"], "match": {"countPlural=one": "Das Löschen dieses Repositorys betrifft {count} Stack:", "countPlural=other": "Das Löschen dieses Repositorys betrifft {count} Stacks:"}}],
 	"settings_git_error_url_required_to_test": "Für den Test ist eine Repository-URL erforderlich",
 	"settings_git_test_success_detail": "Verbindung erfolgreich! Branch: {branch}, Commit: {commit}",
 	"settings_git_connection_test_failed": "Verbindungstest fehlgeschlagen",

@@ -160,6 +160,7 @@
 	"dashboard_containers_restarting": "En redémarrage",
 	"dashboard_containers_unhealthy": "Défectueux",
 	"dashboard_containers_pending_updates": "Mises à jour en attente",
+	"dashboard_containers_pinned_digest": "Digest épinglé déplacé",
 	"dashboard_containers_running_title": "Conteneurs en cours d'exécution",
 	"dashboard_containers_stopped_title": "Conteneurs arrêtés",
 	"dashboard_containers_paused_title": "Conteneurs en pause",
@@ -464,6 +465,8 @@
 	"containers_list_hawser_update_instructions": "Instructions de mise à jour sur GitHub",
 	"containers_list_update_click_title": "Mise à jour disponible - cliquer pour mettre à jour",
 	"containers_list_view_changelog": "Voir le journal des changements",
+	"containers_list_pinned_digest_heading": "Épinglé à une empreinte",
+	"containers_list_pinned_digest_title": "Le tag pointe vers une nouvelle empreinte, mais cette image est épinglée à l'ancienne - mettez à jour l'empreinte dans votre fichier compose pour la récupérer",
 	"containers_list_update_held_title": "Mise à jour retenue : il reste {count} heure(s) avant l'âge minimal de l'image",
 	"containers_list_update_check_failed": "Échec de la vérification des mises à jour",
 	"containers_list_registry_query_failed": "Impossible d'interroger le registre",
@@ -1554,6 +1557,7 @@
 			}
 		}
 	],
+	"updates_pinned_digest_short": "{count} épinglé(s) par empreinte",
 	"updates_cooling_down_short": "{count} en attente",
 	"updates_check_title": "Vérifier les mises à jour disponibles",
 	"updates_checking_progress": "Vérification {checked}/{total}",
@@ -1582,6 +1586,7 @@
 	"updates_no_source_after": "pointant vers un dépôt GitHub ou Gitea/Forgejo).",
 	"updates_notes_from": "Notes de",
 	"tags_filter_all": "Tous les tags",
+	"tags_filter_untagged": "Sans tag",
 	"tags_filter_count": [
 		{
 			"declarations": [
@@ -2670,7 +2675,7 @@
 	"stacks_git_repull_images_hint_before": "Télécharge toujours les dernières images avant de déployer, même si le fichier compose n'a pas changé. Utile pour les flux CI/CD avec des tags statiques comme",
 	"stacks_git_repull_images_hint_after": ".",
 	"stacks_git_force_redeploy": "Forcer le redéploiement",
-	"stacks_git_force_redeploy_hint": "Redéploie toujours la stack lors d'un webhook ou d'une synchronisation planifiée, même si aucun changement Git n'est détecté.",
+	"stacks_git_force_redeploy_hint": "Redéploie toujours la stack lors d'un webhook ou d'une synchronisation planifiée, même si aucun changement Git n'est détecté. Force la recréation complète de tous les conteneurs ; sans cette option, un déploiement ne recrée que les services dont la configuration a changé.",
 	"stacks_git_deploy_now": "Déployer maintenant",
 	"stacks_git_deploy_now_hint": "Cloner et déployer la stack immédiatement",
 	"stacks_git_env_info_storage_before": "Remplace les variables des fichiers env de votre dépôt. Les valeurs non secrètes sont enregistrées dans",
@@ -3043,6 +3048,8 @@
 	],
 	"stackenv_injected_from": "depuis",
 	"stackenv_injected_the_provider": "le fournisseur",
+	"stackenv_injected_show": "Afficher",
+	"stackenv_injected_hide": "Masquer",
 	"stackenv_injected_detail_before": "Injecté dans le conteneur lors du dernier déploiement - jamais écrit dans",
 	"stackenv_injected_detail_after": ".",
 	"stackenv_unbound_title": "Aucun fournisseur de secrets n'est lié",
@@ -5992,6 +5999,8 @@
 	"settings_git_test_connection": "Tester la connexion",
 	"settings_git_item_repository": "le dépôt",
 	"settings_git_delete": "Supprimer",
+	"settings_git_checking_stacks": "Vérification des stacks qui utilisent ce dépôt...",
+	"settings_git_delete_affects_stacks": [{"declarations": ["input count", "local countPlural = count: plural"], "selectors": ["countPlural"], "match": {"countPlural=one": "La suppression de ce dépôt affecte {count} stack :", "countPlural=other": "La suppression de ce dépôt affecte {count} stacks :"}}],
 	"settings_git_error_url_required_to_test": "L'URL du dépôt est nécessaire pour tester",
 	"settings_git_test_success_detail": "Connexion réussie ! Branche : {branch}, commit : {commit}",
 	"settings_git_connection_test_failed": "Échec du test de connexion",

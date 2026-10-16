@@ -10371,6 +10371,9 @@
                           "hasImageUpdate": {
                             "type": "boolean"
                           },
+                          "pinnedToDigest": {
+                            "type": "boolean"
+                          },
                           "newerVersion": {
                             "type": "object",
                             "properties": {}
@@ -10384,7 +10387,8 @@
                           "containerName",
                           "currentImage",
                           "checkedAt",
-                          "hasImageUpdate"
+                          "hasImageUpdate",
+                          "pinnedToDigest"
                         ]
                       }
                     }
@@ -10405,6 +10409,7 @@
                       "currentImage": "string",
                       "checkedAt": "string",
                       "hasImageUpdate": true,
+                      "pinnedToDigest": true,
                       "newerVersion": {},
                       "releaseAgeRemainingHours": 0
                     }
@@ -14696,7 +14701,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "stacksUsing lists the git stacks bound to this repository, each {stackName, environmentId}, filtered to the caller's accessible environments (plus null-env stacks) on enterprise.",
             "content": {
               "application/json": {
                 "schema": {
@@ -14716,13 +14721,21 @@
                     },
                     "credentialId": {
                       "type": "integer"
+                    },
+                    "stacksUsing": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {}
+                      }
                     }
                   },
                   "required": [
                     "id",
                     "name",
                     "url",
-                    "branch"
+                    "branch",
+                    "stacksUsing"
                   ]
                 },
                 "example": {
@@ -14730,7 +14743,10 @@
                   "name": "string",
                   "url": "string",
                   "branch": "string",
-                  "credentialId": 0
+                  "credentialId": 0,
+                  "stacksUsing": [
+                    {}
+                  ]
                 }
               }
             }
@@ -26979,6 +26995,9 @@
               }
             }
           },
+          "400": {
+            "description": "Invalid stack name"
+          },
           "403": {
             "description": "Permission denied (requires stacks:edit)"
           },
@@ -27047,6 +27066,9 @@
         "responses": {
           "200": {
             "description": "Successful response"
+          },
+          "400": {
+            "description": "Invalid stack name"
           },
           "403": {
             "description": "Permission denied (needs stacks:view)"
@@ -27255,6 +27277,9 @@
               }
             }
           },
+          "400": {
+            "description": "Invalid stack name"
+          },
           "403": {
             "description": "Permission denied (requires stacks:remove)"
           },
@@ -27302,6 +27327,9 @@
         "responses": {
           "200": {
             "description": "Server-Sent-Events job stream with progress events and a final result event ({success, output})"
+          },
+          "400": {
+            "description": "Invalid stack name"
           },
           "403": {
             "description": "Permission denied (requires stacks:start, or environment access denied on enterprise)"
@@ -27556,6 +27584,9 @@
               }
             }
           },
+          "400": {
+            "description": "Invalid stack name"
+          },
           "401": {
             "description": "Authentication required"
           },
@@ -27621,6 +27652,9 @@
               }
             }
           },
+          "400": {
+            "description": "Invalid stack name"
+          },
           "401": {
             "description": "Authentication required"
           },
@@ -27672,6 +27706,9 @@
         "responses": {
           "200": {
             "description": "Plain-text log content"
+          },
+          "400": {
+            "description": "Invalid stack name"
           },
           "401": {
             "description": "Authentication required"
@@ -27742,6 +27779,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid stack name"
           },
           "403": {
             "description": "Permission denied, or access denied to this environment"
@@ -27862,6 +27902,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid stack name (or malformed request body)"
           },
           "403": {
             "description": "Permission denied (needs stacks:view)"
@@ -28032,6 +28075,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid stack name (or malformed request body)"
           },
           "403": {
             "description": "Permission denied (requires stacks:view, or environment access denied on enterprise)"
@@ -28684,6 +28730,9 @@
           "200": {
             "description": "Server-Sent-Events job stream with a final result event ({success, output})"
           },
+          "400": {
+            "description": "Invalid stack name"
+          },
           "403": {
             "description": "Permission denied (requires stacks:restart, or environment access denied on enterprise)"
           }
@@ -28747,6 +28796,9 @@
               }
             }
           },
+          "400": {
+            "description": "Invalid stack name"
+          },
           "403": {
             "description": "Permission denied, or access denied to this environment"
           }
@@ -28809,6 +28861,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid stack name"
           },
           "403": {
             "description": "Permission denied, or access denied to this environment"

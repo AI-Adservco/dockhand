@@ -545,6 +545,10 @@ export const pendingContainerUpdates = sqliteTable('pending_container_updates', 
 	// True when a digest image update is pending (the classic amber icon). Defaults
 	// true so pre-existing rows keep behaving exactly as before.
 	hasImageUpdate: integer('has_image_update', { mode: 'boolean' }).notNull().default(true),
+	// True when the image is `repo:tag@sha256:...` and the digest behind its tag has
+	// moved. Reported, never applied: the pull returns the pinned manifest, so the
+	// compose file is what has to change. Defaults false so existing rows are unchanged.
+	pinnedToDigest: integer('pinned_to_digest', { mode: 'boolean' }).notNull().default(false),
 	// A newer VERSION tag (semver) for a pinned image, as JSON {tag,bump,skipped}.
 	// Null when there's no semver suggestion. Advisory - never auto-applied.
 	newerVersion: text('newer_version'),

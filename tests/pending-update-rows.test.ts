@@ -130,6 +130,38 @@ describe('what a finished check persists', () => {
 		...over
 	});
 
+	test('a pinned move is recorded as pinned and NOT as an available update', () => {
+		// Same shape of answer as a held update: found, worth showing, not applicable.
+		// `hasImageUpdate` is what a bulk update acts on, and pulling the pinned
+		// reference returns the manifest already running.
+		const rows = rowsToPersist([result({ hasUpdate: true, pinnedToDigest: true })]);
+		expect(rows).toHaveLength(1);
+		expect(rows[0].options.pinnedToDigest).toBe(true);
+		expect(rows[0].options.hasImageUpdate).toBe(false);
+	});
+
+	test('an ordinary update is still recorded as available', () => {
+		// The near miss: without this, a rowsToPersist that never sets hasImageUpdate
+		// would satisfy the assertion above.
+		const rows = rowsToPersist([result({ hasUpdate: true, pinnedToDigest: false })]);
+		expect(rows[0].options.hasImageUpdate).toBe(true);
+		expect(rows[0].options.pinnedToDigest).toBe(false);
+	});
+
+	test('a row that is only pinned is still worth keeping', () => {
+		// Otherwise nothing is persisted and the pin vanishes on the next page load.
+		expect(rowsToPersist([result({ hasUpdate: false, pinnedToDigest: true })])).toHaveLength(1);
+	});
+
+	test('reading rows back keeps a pinned one out of the updatable set', () => {
+		const split = splitPendingUpdates({ pendingUpdates: [
+			{ containerId: 'a', hasImageUpdate: false, pinnedToDigest: true },
+			{ containerId: 'b', hasImageUpdate: true }
+		] } as never);
+		expect(split.pinnedDigest.has('a')).toBe(true);
+		expect(split.updatable.map((u) => u.containerId)).toEqual(['b']);
+	});
+
 	test('a held update is recorded with its hours and NOT as an available update', () => {
 		const rows = rowsToPersist([result({ hasUpdate: false, releaseAgeRemainingHours: 41 })]);
 		expect(rows).toHaveLength(1);

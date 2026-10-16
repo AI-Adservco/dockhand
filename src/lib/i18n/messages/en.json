@@ -160,6 +160,7 @@
 	"dashboard_containers_restarting": "Restarting",
 	"dashboard_containers_unhealthy": "Unhealthy",
 	"dashboard_containers_pending_updates": "Pending updates",
+	"dashboard_containers_pinned_digest": "Pinned digest moved",
 	"dashboard_containers_running_title": "Running containers",
 	"dashboard_containers_stopped_title": "Stopped containers",
 	"dashboard_containers_paused_title": "Paused containers",
@@ -464,6 +465,8 @@
 	"containers_list_hawser_update_instructions": "Update instructions on GitHub",
 	"containers_list_update_click_title": "Update available - click to update",
 	"containers_list_view_changelog": "View changelog",
+	"containers_list_pinned_digest_heading": "Pinned to a digest",
+	"containers_list_pinned_digest_title": "The tag moved to a new digest, but this image is pinned to the old one - update the digest in your compose to pull it",
 	"containers_list_update_held_title": "Update held: {count} hour(s) left of the minimum image age",
 	"containers_list_update_check_failed": "Update check failed",
 	"containers_list_registry_query_failed": "Could not query registry",
@@ -1554,6 +1557,7 @@
 			}
 		}
 	],
+	"updates_pinned_digest_short": "{count} pinned by digest",
 	"updates_cooling_down_short": "{count} cooling down",
 	"updates_check_title": "Check for available updates",
 	"updates_checking_progress": "Checking {checked}/{total}",
@@ -2671,7 +2675,7 @@
 	"stacks_git_repull_images_hint_before": "Always pull latest images before deploying, even if the compose file hasn't changed. Useful for CI/CD workflows with static tags like",
 	"stacks_git_repull_images_hint_after": ".",
 	"stacks_git_force_redeploy": "Force redeployment",
-	"stacks_git_force_redeploy_hint": "Always redeploy the stack on webhook or scheduled sync, even if no git changes are detected.",
+	"stacks_git_force_redeploy_hint": "Always redeploy the stack on webhook or scheduled sync, even if no git changes are detected. It forces a full recreate of every container; without it a deploy recreates only the services whose configuration changed.",
 	"stacks_git_deploy_now": "Deploy now",
 	"stacks_git_deploy_now_hint": "Clone and deploy the stack immediately",
 	"stacks_git_env_info_storage_before": "Override variables from your repository env files. Non-secrets are saved to",
@@ -3044,6 +3048,8 @@
 	],
 	"stackenv_injected_from": "from",
 	"stackenv_injected_the_provider": "the provider",
+	"stackenv_injected_show": "Show",
+	"stackenv_injected_hide": "Hide",
 	"stackenv_injected_detail_before": "Injected into the container at last deploy - never written to",
 	"stackenv_injected_detail_after": ".",
 	"stackenv_unbound_title": "No secret provider is bound",
@@ -6265,21 +6271,7 @@
 	"settings_git_item_repository": "repository",
 	"settings_git_delete": "Delete",
 	"settings_git_checking_stacks": "Checking which stacks use this repository...",
-	"settings_git_delete_affects_stacks": [
-		{
-			"declarations": [
-				"input count",
-				"local countPlural = count: plural"
-			],
-			"selectors": [
-				"countPlural"
-			],
-			"match": {
-				"countPlural=one": "Deleting this repository affects {count} stack:",
-				"countPlural=other": "Deleting this repository affects {count} stacks:"
-			}
-		}
-	],
+	"settings_git_delete_affects_stacks": [{"declarations": ["input count", "local countPlural = count: plural"], "selectors": ["countPlural"], "match": {"countPlural=one": "Deleting this repository affects {count} stack:", "countPlural=other": "Deleting this repository affects {count} stacks:"}}],
 	"settings_git_error_url_required_to_test": "Repository URL is required to test",
 	"settings_git_test_success_detail": "Connection successful! Branch: {branch}, Commit: {commit}",
 	"settings_git_connection_test_failed": "Connection test failed",

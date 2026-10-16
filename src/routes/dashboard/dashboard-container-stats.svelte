@@ -6,6 +6,7 @@
 		RefreshCw,
 		AlertTriangle,
 		ArrowUpCircle,
+		Pin,
 		Loader2
 	} from 'lucide-svelte';
 	import { m } from '$lib/paraglide/messages.js';
@@ -17,6 +18,7 @@
 		restarting: number;
 		unhealthy: number;
 		pendingUpdates: number;
+		pinnedDigest?: number;
 		total: number;
 	}
 
@@ -121,10 +123,17 @@
 			<ArrowUpCircle class="w-3 h-3 {containers.pendingUpdates > 0 ? 'text-amber-400' : 'text-muted-foreground'}" />
 			<span class="text-2xs font-medium {containers.pendingUpdates > 0 ? 'text-amber-400' : ''}">{containers.pendingUpdates}</span>
 		</div>
+		{#if (containers.pinnedDigest ?? 0) > 0}
+			<div class="flex items-center gap-0.5 pending-glow" title={m.dashboard_containers_pinned_digest()}>
+				<Pin class="w-3 h-3 text-amber-400 shrink-0" />
+				<span class="text-2xs font-medium text-amber-400">{containers.pinnedDigest}</span>
+			</div>
+		{/if}
 	</div>
 {:else}
-	<!-- Full grid view -->
-	<div class="grid grid-cols-7 gap-1 min-h-5">
+	<!-- Full grid view. An extra column appears only when a pinned digest moved, so the
+	     row stays 7-wide for everyone else rather than reserving a permanently-empty cell. -->
+	<div class="grid gap-1 min-h-5 {(containers.pinnedDigest ?? 0) > 0 ? 'grid-cols-8' : 'grid-cols-7'}">
 		<div class="flex items-center gap-1" title={m.dashboard_containers_running_title()}>
 			<Play class="w-3.5 h-3.5 text-emerald-500" />
 			<span class="text-sm font-medium">{containers.running}</span>
@@ -149,6 +158,12 @@
 			<ArrowUpCircle class="w-3.5 h-3.5 {containers.pendingUpdates > 0 ? 'text-amber-400' : 'text-muted-foreground'}" />
 			<span class="text-sm font-medium {containers.pendingUpdates > 0 ? 'text-amber-400' : ''}">{containers.pendingUpdates}</span>
 		</div>
+		{#if (containers.pinnedDigest ?? 0) > 0}
+			<div class="flex items-center gap-1 pending-glow" title={m.dashboard_containers_pinned_digest()}>
+				<Pin class="w-3.5 h-3.5 text-amber-400 shrink-0" />
+				<span class="text-sm font-medium text-amber-400">{containers.pinnedDigest}</span>
+			</div>
+		{/if}
 		<div class="flex items-center gap-1" title={m.dashboard_containers_total_title()}>
 			<span class="text-xs text-muted-foreground whitespace-nowrap">{m.dashboard_containers_total()}</span>
 			<span class="text-sm font-medium">{containers.total}</span>

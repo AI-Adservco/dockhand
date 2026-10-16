@@ -5982,11 +5982,13 @@ export async function addPendingContainerUpdate(
 		hasImageUpdate?: boolean;
 		newerVersion?: unknown | null;
 		releaseAgeRemainingHours?: number | null;
+		pinnedToDigest?: boolean;
 	} = {}
 ): Promise<void> {
 	const hasImageUpdate = options.hasImageUpdate ?? true;
 	const newerVersion = options.newerVersion != null ? JSON.stringify(options.newerVersion) : null;
 	const releaseAgeRemainingHours = options.releaseAgeRemainingHours ?? null;
+	const pinnedToDigest = options.pinnedToDigest ?? false;
 	const now = new Date().toISOString();
 	// Use insert with onConflictDoUpdate for upsert behavior
 	await db.insert(pendingContainerUpdates)
@@ -5998,6 +6000,7 @@ export async function addPendingContainerUpdate(
 			hasImageUpdate,
 			newerVersion,
 			releaseAgeRemainingHours,
+			pinnedToDigest,
 			checkedAt: now
 		})
 		.onConflictDoUpdate({
@@ -6008,6 +6011,7 @@ export async function addPendingContainerUpdate(
 				hasImageUpdate,
 				newerVersion,
 				releaseAgeRemainingHours,
+				pinnedToDigest,
 				checkedAt: now
 			}
 		});

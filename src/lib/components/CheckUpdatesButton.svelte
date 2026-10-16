@@ -14,6 +14,18 @@
 		imageName: string;
 	}
 
+	/**
+	 * A container running `repo:tag@sha256:...` whose tag now resolves to a different
+	 * digest. Reported, never applied: pulling that reference returns the pinned manifest,
+	 * so the digest in the user's compose is what has to change.
+	 */
+	export interface PinnedDigestItem {
+		containerId: string;
+		containerName: string;
+		imageName: string;
+		newDigest?: string;
+	}
+
 	/** A container that has a newer VERSION tag (semver) — independent of digest updates. */
 	export interface NewerVersionItem {
 		containerId: string;
@@ -36,6 +48,8 @@
 			withUpdates: UpdateCheckResultItem[];
 			failed: FailedCheckItem[];
 			newerVersions: NewerVersionItem[];
+			/** Containers whose tag moved to a new digest but which stay pinned to the old one. */
+			pinned: PinnedDigestItem[];
 			/** Containers whose update is held by the minimum image age, as id -> hours left. */
 			coolingDown: Map<string, number>;
 		}) => void;
@@ -127,9 +141,15 @@
 
 			unlockWidth();
 
+			// A `repo:tag@sha256:...` image is left out of the updatable set on purpose:
+			// pulling that reference returns the pinned manifest, so the move is reported
+			// and the digest in the user's compose is theirs to replace.
 			const withUpdates: UpdateCheckResultItem[] = data.results
-				.filter((r: any) => r.hasUpdate && !r.systemContainer && !r.updateDisabled && !r.isLocalImage)
+				.filter((r: any) => r.hasUpdate && !r.pinnedToDigest && !r.systemContainer && !r.updateDisabled && !r.isLocalImage)
 				.map((r: any) => ({ containerId: r.containerId, containerName: r.containerName, imageName: r.imageName }));
+			const pinned: PinnedDigestItem[] = data.results
+				.filter((r: any) => r.hasUpdate && r.pinnedToDigest && !r.systemContainer && !r.updateDisabled)
+				.map((r: any) => ({ containerId: r.containerId, containerName: r.containerName, imageName: r.imageName, newDigest: r.newDigest }));
 			const failed: FailedCheckItem[] = data.results
 				.filter((r: any) => r.error && !r.hasUpdate)
 				.map((r: any) => ({ containerId: r.containerId, containerName: r.containerName, imageName: r.imageName, error: r.error }));
@@ -146,7 +166,7 @@
 				? m.updates_newer_version_tags({ count: newerVersions.length })
 				: '';
 
-			if (withUpdates.length === 0 && newerVersions.length === 0) {
+			if (withUpdates.length === 0 && newerVersions.length === 0 && pinned.length === 0) {
 				// Keep the "Latest" status until re-check / env-switch — don't auto-revert (#1019)
 				status = 'none';
 				if (failed.length > 0) {
@@ -164,6 +184,7 @@
 				const parts = [
 					withUpdates.length > 0 ? m.updates_available_count({ count: withUpdates.length }) : '',
 					semverNote,
+					pinned.length > 0 ? m.updates_pinned_digest_short({ count: pinned.length }) : '',
 					deferred.length > 0 ? m.updates_cooling_down_short({ count: deferred.length }) : ''
 				].filter(Boolean);
 				const summary = parts.join(', ');
@@ -178,6 +199,7 @@
 				withUpdates,
 				failed,
 				newerVersions,
+				pinned,
 				coolingDown: new Map(deferred.map((r: any) => [r.containerId, r.releaseAgeRemainingHours as number]))
 			});
 		} catch {

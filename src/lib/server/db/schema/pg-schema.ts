@@ -546,6 +546,10 @@ export const pendingContainerUpdates = pgTable('pending_container_updates', {
 	hasImageUpdate: boolean('has_image_update').notNull().default(true),
 	// A newer VERSION tag (semver) for a pinned image, as JSON {tag,bump,skipped}.
 	// Null when there's no semver suggestion. Advisory - never auto-applied.
+	// True when the image is `repo:tag@sha256:...` and the digest behind its tag has
+	// moved. Reported, never applied: the pull returns the pinned manifest, so the
+	// compose file is what has to change. Defaults false so existing rows are unchanged.
+	pinnedToDigest: boolean('pinned_to_digest').notNull().default(false),
 	newerVersion: text('newer_version'),
 	// Hours left before a held update may be applied. Null when no cooldown applies,
 	// so a row can record "waiting" without claiming the update is ready.

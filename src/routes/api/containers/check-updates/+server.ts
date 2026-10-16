@@ -28,6 +28,12 @@ export interface UpdateCheckResult {
 	updateDisabled?: boolean;
 	/** A newer VERSION tag is published for a pinned image (advisory, never auto-applied). */
 	newerVersion?: NewerVersion;
+	/**
+	 * The image is `repo:tag@sha256:...`, so the digest behind its tag moved but pulling
+	 * that reference still returns the pinned manifest. Advisory, like newerVersion: the
+	 * digest lives in the user's compose and replacing it is their edit to make.
+	 */
+	pinnedToDigest?: boolean;
 }
 
 /**
@@ -209,7 +215,8 @@ export const POST: RequestHandler = async ({ url, cookies, request }) => {
 					isLocalImage: result.isLocalImage,
 					systemContainer,
 					updateDisabled,
-					newerVersion: newerVersion ?? undefined
+					newerVersion: newerVersion ?? undefined,
+					pinnedToDigest: result.pinnedToDigest
 				};
 			} catch (error: any) {
 				return {

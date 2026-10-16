@@ -146,6 +146,8 @@ export async function runEnvUpdateCheckJob(
 	// A held update is worth a row too: it must show as waiting without being
 	// offered for a bulk update.
 	const cooldownByContainer = new Map<string, number>();
+	// Pinned moves: found, recorded, never offered for an update.
+	const pinnedByContainer = new Map<string, boolean>();
 		const semverByContainer = new Map<string, NewerVersion>();
 
 		// Clear pending updates at the start - we'll re-add as we discover updates
@@ -210,6 +212,16 @@ export async function runEnvUpdateCheckJob(
 					if (result.hasUpdate) {
 						await log(`    Image update suppressed by dockhand.watch.digest=false`);
 					}
+					result.hasUpdate = false;
+				}
+
+				// A moved digest on a pinned tag is REPORTED, never applied: pulling
+				// `repo:tag@sha256:...` returns the manifest already running, so acting on
+				// it would recreate the container for no change. Suppressed before the apply
+				// list is built, because the pull and recreate below have no gate of their own.
+				if (result.hasUpdate && result.pinnedToDigest) {
+					await log(`    Reported only - the digest is pinned in the compose file`);
+					pinnedByContainer.set(container.id, true);
 					result.hasUpdate = false;
 				}
 
@@ -302,7 +314,8 @@ export async function runEnvUpdateCheckJob(
 		const pendingContainerIds = new Set<string>([
 			...updatesAvailable.map((u) => u.containerId),
 			...semverByContainer.keys(),
-			...cooldownByContainer.keys()
+			...cooldownByContainer.keys(),
+			...pinnedByContainer.keys()
 		]);
 		for (const cid of pendingContainerIds) {
 			const digest = updatesAvailable.find((u) => u.containerId === cid);
@@ -316,7 +329,8 @@ export async function runEnvUpdateCheckJob(
 				{
 					hasImageUpdate: !!digest,
 					newerVersion: semver,
-					releaseAgeRemainingHours: cooldownByContainer.get(cid) ?? null
+					releaseAgeRemainingHours: cooldownByContainer.get(cid) ?? null,
+					pinnedToDigest: pinnedByContainer.get(cid) ?? false
 				}
 			);
 		}

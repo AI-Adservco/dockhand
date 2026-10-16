@@ -6,6 +6,7 @@
  */
 
 import { existsSync, mkdirSync, rmSync, readdirSync, cpSync, statSync, lstatSync, readlinkSync, unlinkSync, renameSync, readFileSync, writeFileSync, realpathSync, accessSync, constants as fsConstants } from 'node:fs';
+import { attachResolvedSecrets } from './resolved-secrets.js';
 import { join, resolve, relative, dirname, basename, isAbsolute, normalize as pathNormalize, sep as pathSep } from 'node:path';
 import { judgeSymlink } from './stack-symlinks';
 import { spawn as nodeSpawn } from 'node:child_process';
@@ -25,6 +26,7 @@ import {
 } from './git-deletions';
 import { buildComposeOperationArgs, shouldRunSeparateBuildStep } from './compose-args';
 import { findStackNameCollision, getStackPathHintsFromContainers, moveStackFilePathCrossDevice, resolveStackDirForLayout } from './stack-path-utils';
+import { isValidStackName } from './stack-name-guard';
 import { db, environments, eq } from './db/drizzle.js';
 import { isAllowedStackFilename } from './stack-filename';
 import { coolingDown as coolingDownRows } from '$lib/utils/pending-update-rows';
@@ -113,6 +115,13 @@ export interface StackOperationResult {
 	 * constructed from DB-only vars -- callers MUST feed this into the recorder via
 	 * RunRecorder.addSecrets() before closing it, or a provider-resolved secret that
 	 * surfaces in compose's raw error text is stored unredacted (see deploy-run-record.ts).
+	 *
+	 * NON-ENUMERABLE, via attachResolvedSecrets below: a result travels to the client as
+	 * a webhook reply or an SSE `result` event, and a plaintext secret must never ride
+	 * along. Declaring a narrower return type does not stop that - TypeScript checks
+	 * excess properties only on literals, while JSON.stringify serializes whatever the
+	 * object actually holds - so the guarantee has to hold at runtime. Reading the field
+	 * is unaffected; JSON.stringify, a spread and structuredClone all skip it.
 	 */
 	resolvedSecrets?: string[];
 }
@@ -135,6 +144,8 @@ export interface ContainerDetail {
 	exitCode?: number;
 	created: number;
 	labels: Record<string, string>;
+	/** The tag's digest moved but this container pins the old one (reported, not applied). */
+	pinnedToDigest?: boolean;
 }
 
 /**
@@ -556,6 +567,13 @@ export async function validateStackPath(input: string): Promise<StackPathValidat
  * Always checks legacy path for backwards compatibility with pre-env stacks.
  */
 export async function findStackDir(stackName: string, envId?: number | null): Promise<string | null> {
+	// Defence in depth: this builds candidate paths with bare join(root, ..., name), so a
+	// name that is not a plain stack name could escape the root the same way the routes'
+	// own join would. The routes reject it before here, but guarding at this builder too
+	// makes it, with getStackDir, a path builder no future caller can turn into a traversal.
+	if (!isValidStackName(stackName)) {
+		return null;
+	}
 	// 1. Check database for custom compose path first (adopted/imported stacks)
 	const source = await getStackSource(stackName, envId);
 	if (source?.composePath) {
@@ -841,7 +859,7 @@ export async function saveStackComposeFile(
 ): Promise<{ success: boolean; error?: string; composePath?: string }> {
 	// Validate stack name - Docker Compose requires lowercase alphanumeric, hyphens, underscores
 	// Must also start with a letter or number
-	if (!/^[a-z0-9][a-z0-9_-]*$/.test(name)) {
+	if (!isValidStackName(name)) {
 		return {
 			success: false,
 			error: 'Stack name must be lowercase, start with a letter or number, and contain only letters, numbers, hyphens, and underscores'
@@ -2077,6 +2095,9 @@ export async function listComposeStacks(envId?: number | null): Promise<ComposeS
 	// A held update: an update exists but the image is too young to apply. Counted
 	// separately so it never reaches updateCount, which offers a redeploy.
 	const coolingDownIds = new Set<string>();
+	// The tag's digest moved but the image pins the old one. Reported, never applied
+	// (the compose file is what has to change), so kept out of updateCount too.
+	const pinnedDigestIds = new Set<string>();
 	const newerVersionById = new Map<string, unknown>();
 	if (typeof envId === 'number') {
 		try {
@@ -2084,6 +2105,7 @@ export async function listComposeStacks(envId?: number | null): Promise<ComposeS
 			const heldIds = coolingDownRows(pending, (await getMinimumReleaseAgeConfig(envId).catch(() => ({ hours: 0 }))).hours);
 			pending.forEach((p) => {
 				if (p.hasImageUpdate) pendingUpdateIds.add(p.containerId);
+				if (p.pinnedToDigest) pinnedDigestIds.add(p.containerId);
 				if (heldIds.has(p.containerId)) coolingDownIds.add(p.containerId);
 				if (p.newerVersion) {
 					newerVersionIds.add(p.containerId);
@@ -2159,6 +2181,7 @@ export async function listComposeStacks(envId?: number | null): Promise<ComposeS
 					created: c.created,
 					labels: c.labels || {},
 					updateAvailable: pendingUpdateIds.has(c.id),
+					pinnedToDigest: pinnedDigestIds.has(c.id),
 					newerVersion: newerVersionById.get(c.id) ?? null
 				};
 			})
@@ -2178,6 +2201,8 @@ export async function listComposeStacks(envId?: number | null): Promise<ComposeS
 			newerVersionCount: stackContainers.filter((c) => newerVersionIds.has(c.id)).length,
 			// Held updates in this stack - shown as waiting, never offered for redeploy.
 			coolingDownCount: stackContainers.filter((c) => coolingDownIds.has(c.id)).length,
+			// Containers whose pinned digest moved - reported, never applied.
+			pinnedDigestCount: stackContainers.filter((c) => pinnedDigestIds.has(c.id)).length,
 			status: deriveStackStatus({
 				total: stackContainers.length,
 				running: runningCount,
@@ -2781,7 +2806,7 @@ export async function removeStack(
 	// Reject a name that isn't a plain stack name BEFORE any path construction. A
 	// traversal name (e.g. "..") would make getStackDir resolve to DATA_DIR's parent and
 	// rmSync it; the create/deploy paths already enforce this same shape.
-	if (!/^[a-z0-9][a-z0-9_-]*$/.test(stackName)) {
+	if (!isValidStackName(stackName)) {
 		return { success: false, error: 'Invalid stack name' };
 	}
 	return withStackLock(stackName, async () => {
@@ -3123,7 +3148,7 @@ export async function deployStack(options: DeployStackOptions): Promise<StackOpe
 
 	// Validate stack name - Docker Compose requires lowercase alphanumeric, hyphens, underscores
 	// Must also start with a letter or number
-	if (!/^[a-z0-9][a-z0-9_-]*$/.test(name)) {
+	if (!isValidStackName(name)) {
 		console.log(`${logPrefix} ERROR: Invalid stack name format`);
 		return {
 			success: false,
@@ -3378,7 +3403,7 @@ export async function deployStack(options: DeployStackOptions): Promise<StackOpe
 		// deployGitStack) feed this into their stack_deploy run recorder via
 		// RunRecorder.addSecrets() before closing it -- see StackOperationResult's doc
 		// comment and deploy-run-record.ts.
-		result.resolvedSecrets = Object.values(secretVars);
+		attachResolvedSecrets(result, Object.values(secretVars));
 		console.log(`${logPrefix} ========================================`);
 		console.log(`${logPrefix} DEPLOY STACK RESULT`);
 		console.log(`${logPrefix} ========================================`);

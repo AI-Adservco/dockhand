@@ -15,7 +15,7 @@
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import * as Popover from '$lib/components/ui/popover';
 	import MultiSelectFilter from '$lib/components/MultiSelectFilter.svelte';
-	import { Play, Square, Trash2, Plus, ArrowBigDown, Pencil, ExternalLink, GitBranch, RefreshCw, Loader2, FileCode, FileText, FileOutput, Box, RotateCcw, ScrollText, Terminal, Eye, Network, HardDrive, Heart, HeartPulse, HeartOff, ChevronsUpDown, ChevronsDownUp, Rocket, AlertTriangle, X, Layers, Pause, CircleDashed, Skull, FolderOpen, Variable, Clock, RotateCw, Import, Ship, Cable, LayoutPanelLeft, Rows3, GripVertical, Globe, CircleArrowUp, NotepadText, Tag, Copy, Check } from 'lucide-svelte';
+	import { Play, Square, Trash2, Plus, ArrowBigDown, Pencil, ExternalLink, GitBranch, RefreshCw, Loader2, FileCode, FileText, FileOutput, Box, RotateCcw, ScrollText, Terminal, Eye, Network, HardDrive, Heart, HeartPulse, HeartOff, ChevronsUpDown, ChevronsDownUp, Rocket, AlertTriangle, X, Layers, Pause, CircleDashed, Skull, FolderOpen, Variable, Clock, RotateCw, Import, Ship, Cable, LayoutPanelLeft, Rows3, GripVertical, Globe, CircleArrowUp, NotepadText, Tag, Copy, Check, Pin } from 'lucide-svelte';
 	import { formatPorts } from '$lib/utils/port-format';
 	import { formatUptime } from '$lib/i18n/time';
 	import { parseCustomUrl } from '$lib/utils/custom-url';
@@ -999,7 +999,7 @@
 	// True when any stack container shows an update-available (amber) or
 	// check-failed (red) indicator — gates the "dismiss indicators" button.
 	const hasUpdateIndicators = $derived(
-		stacks.some((s) => s.updatesAvailable || (s.newerVersionCount ?? 0) > 0 || (s.coolingDownCount ?? 0) > 0) ||
+		stacks.some((s) => s.updatesAvailable || (s.newerVersionCount ?? 0) > 0 || (s.coolingDownCount ?? 0) > 0 || (s.pinnedDigestCount ?? 0) > 0) ||
 			failedUpdateCheckIds.size > 0
 	);
 	// Counts for the compact dismiss: stacks with a digest update, and total containers
@@ -1011,6 +1011,10 @@
 	);
 	const stackNewerVersionCount = $derived(
 		stacks.reduce((sum, s) => sum + (s.newerVersionCount ?? 0), 0)
+	);
+	// Containers whose pinned digest moved, across every stack - reported, not applied.
+	const stackPinnedCount = $derived(
+		stacks.reduce((sum, s) => sum + (s.pinnedDigestCount ?? 0), 0)
 	);
 
 	// Dismiss both the amber "update available" and red "check failed" indicators.
@@ -1799,6 +1803,7 @@
 				digestCount={stackDigestCount}
 				newerVersionCount={stackNewerVersionCount}
 				coolingDownCount={stackCoolingDownCount}
+				pinnedCount={stackPinnedCount}
 				onDismiss={dismissStackUpdates}
 			/>
 			<Button
@@ -2122,6 +2127,19 @@
 							</Tooltip.Trigger>
 							<Tooltip.Content>
 								{m.stacks_list_cooling_down_tooltip({ count: stack.coolingDownCount ?? 0 })}
+							</Tooltip.Content>
+						</Tooltip.Root>
+					{/if}
+					{#if (stack.pinnedDigestCount ?? 0) > 0 && $appSettings.highlightUpdates}
+						<!-- Passive: a pinned digest moved, but applying it is an edit to the
+						     compose file, so there is no stack-level action here. -->
+						<Tooltip.Root>
+							<Tooltip.Trigger class="inline-flex items-center gap-0.5 self-center shrink-0 text-amber-500">
+								<Pin class="w-3.5 h-3.5" />
+								<span class="text-2xs font-medium leading-none">{stack.pinnedDigestCount}</span>
+							</Tooltip.Trigger>
+							<Tooltip.Content>
+								{m.containers_list_pinned_digest_title()}
 							</Tooltip.Content>
 						</Tooltip.Root>
 					{/if}
@@ -2624,6 +2642,24 @@
 													{/if}
 												{/if}
 											</span>
+										{:else if container.pinnedToDigest && $appSettings.highlightUpdates}
+											<!-- The tag moved to a new digest while this container pins the old
+											     one. Amber: a newer image exists, but applying it is an edit to
+											     the compose file, so there is no update button. -->
+											<Tooltip.Root>
+												<Tooltip.Trigger>
+													<Pin class="w-3.5 h-3.5 shrink-0 text-amber-500" />
+												</Tooltip.Trigger>
+												<Tooltip.Content side="right" class="w-72 p-3">
+													<div class="space-y-1.5">
+														<p class="font-medium text-sm flex items-center gap-1.5 whitespace-nowrap">
+															<Pin class="w-4 h-4 text-amber-500 shrink-0" />
+															{m.containers_list_pinned_digest_heading()}
+														</p>
+														<p class="text-muted-foreground text-xs break-words">{m.containers_list_pinned_digest_title()}</p>
+													</div>
+												</Tooltip.Content>
+											</Tooltip.Root>
 										{:else if failedUpdateCheckIds.has(container.id)}
 											<Tooltip.Root>
 												<Tooltip.Trigger>
