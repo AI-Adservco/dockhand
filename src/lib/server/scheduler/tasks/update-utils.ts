@@ -90,6 +90,47 @@ export function localDigestIsIndexChild(localDigests: string[], indexBody: unkno
 }
 
 /**
+ * The digest of the index entry for one platform, or null if the body is not an index or
+ * has no entry for that platform. Match is os + architecture, and variant only when the
+ * entry declares one (so a plain arm64 entry still matches a daemon that reports no
+ * variant). Attestation/unknown entries carry no usable platform and are skipped.
+ */
+export function platformChildDigest(
+	indexBody: unknown,
+	platform: { os: string; architecture: string; variant?: string }
+): string | null {
+	const manifests = (indexBody as { manifests?: unknown })?.manifests;
+	if (!Array.isArray(manifests)) return null;
+	for (const entry of manifests) {
+		const p = (entry as { platform?: { os?: unknown; architecture?: unknown; variant?: unknown } })?.platform;
+		const digest = (entry as { digest?: unknown })?.digest;
+		if (!p || typeof digest !== 'string' || !digest) continue;
+		if (p.os !== platform.os || p.architecture !== platform.architecture) continue;
+		if (typeof p.variant === 'string' && p.variant && platform.variant && p.variant !== platform.variant) continue;
+		return digest;
+	}
+	return null;
+}
+
+/**
+ * Whether two multi-arch indexes carry the SAME image for one platform. A tag republished
+ * with only another architecture or the attestations rebuilt moves the index digest while
+ * the platform image is byte-for-byte unchanged, so comparing index digests reports a
+ * phantom update. Returns true only when BOTH bodies are indexes AND each has an
+ * entry for the platform AND those entries' digests are equal - any other case returns
+ * false so the caller keeps its existing verdict.
+ */
+export function samePlatformImage(
+	localIndexBody: unknown,
+	registryIndexBody: unknown,
+	platform: { os: string; architecture: string; variant?: string }
+): boolean {
+	const local = platformChildDigest(localIndexBody, platform);
+	const registry = platformChildDigest(registryIndexBody, platform);
+	return local !== null && local === registry;
+}
+
+/**
  * Determine if an update should be blocked based on vulnerability criteria.
  */
 export function shouldBlockUpdate(
