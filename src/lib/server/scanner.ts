@@ -18,6 +18,7 @@ import {
 } from './docker';
 import {
 	isDaemonExportFailure,
+	scanErrorOutput,
 	chooseReportedError,
 	resolveRegistryScanTarget,
 	needsRepoTags,
@@ -722,9 +723,12 @@ async function runScannerContainerImpl(
 			try {
 				return await run(false);
 			} catch (daemonError) {
-				const dmsg = daemonError instanceof Error ? daemonError.message : String(daemonError);
 				// Both halves failed; the core decides which failure explains the outcome.
-				throw chooseReportedError(rmsg, dmsg) === 'registry' ? registryError : daemonError;
+				// It classifies the daemon error for the export bug, so feed it the FULL
+				// output, not the truncated message (same ~1000-char cut as below).
+				throw chooseReportedError(rmsg, scanErrorOutput(daemonError)) === 'registry'
+					? registryError
+					: daemonError;
 			}
 		}
 	}
@@ -732,8 +736,9 @@ async function runScannerContainerImpl(
 	try {
 		return await run(false);
 	} catch (error) {
-		const msg = error instanceof Error ? error.message : String(error);
-		if (!isDaemonExportFailure(msg)) throw error;
+		// Classify on the FULL scanner output, not the truncated error message: the
+		// export-bug signal usually lands after the message's ~1000-char cut.
+		if (!isDaemonExportFailure(scanErrorOutput(error))) throw error;
 		// The daemon handed the scanner an incomplete tar (containerd/OCI store blob
 		// loss). Remember this env and retry from the registry.
 		console.warn(`[Scanner] ${scannerType}: daemon export produced an incomplete image for ${imageName}; retrying from the registry`);
