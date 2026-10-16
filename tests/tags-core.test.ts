@@ -177,6 +177,16 @@ describe('matchesTagFilter', () => {
 			expect(matchesTagFilter([2], [1, UNTAGGED_TAG_ID], 'any')).toBe(false);
 			expect(matchesTagFilter([1, 2], [1, UNTAGGED_TAG_ID], 'any')).toBe(true);
 		});
+		test('ANY mode: an untagged item does NOT match a filter that omits UNTAGGED_TAG_ID', () => {
+			expect(matchesTagFilter([], [1], 'any')).toBe(false);
+			expect(matchesTagFilter(undefined, [1, 2], 'any')).toBe(false);
+		});
+		test('ANY mode: the sentinel never matches an item that literally carries tag id -1', () => {
+			// labelTagId maps a dockhand.tags label into [-2e9, -1], so -1 is a valid label-tag
+			// id. An item carrying it is TAGGED; filtering by Untagged alone must not match it.
+			expect(matchesTagFilter([UNTAGGED_TAG_ID], [UNTAGGED_TAG_ID], 'any')).toBe(false);
+			expect(matchesTagFilter([UNTAGGED_TAG_ID], [UNTAGGED_TAG_ID], 'all')).toBe(false);
+		});
 		test('ALL mode: an item cannot simultaneously be untagged and have tags', () => {
 			expect(matchesTagFilter([], [1, UNTAGGED_TAG_ID], 'all')).toBe(false);
 			expect(matchesTagFilter([1], [1, UNTAGGED_TAG_ID], 'all')).toBe(false);
