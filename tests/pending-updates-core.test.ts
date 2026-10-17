@@ -9,7 +9,7 @@
  * land the latest: per-service pull failure, build:, pull_policy:never).
  */
 import { describe, test, expect } from 'bun:test';
-import { pendingRowsToClear, countLivePending, countImageUpdates, isImageUpdateRow, countLivePinnedDigest, countPinnedDigest, isPinnedDigestRow, type PendingRow, type LiveContainer } from '../src/lib/server/pending-updates-core';
+import { pendingRowsToClear, countLivePending, countImageUpdates, isImageUpdateRow, countLivePinnedDigest, countPinnedDigest, isPinnedDigestRow, countLiveNewerVersion, countNewerVersion, isNewerVersionRow, type PendingRow, type LiveContainer } from '../src/lib/server/pending-updates-core';
 
 const STACK = 'shop';
 const LATEST = 'sha256:newnewnew';
@@ -208,5 +208,33 @@ describe('pinned-digest counting is separate from image updates (#1755)', () => 
 	test('live-match drops a pinned row whose container is gone', () => {
 		expect(countLivePinnedDigest([pinned('a')], [])).toBe(0);
 		expect(countLivePinnedDigest([pinned('a')], ['a'])).toBe(1);
+	});
+});
+
+describe('newer-version counting is separate from image updates (#1755 follow-up)', () => {
+	// A newer-version-tag suggestion is advisory, never auto-applied, so it has its own
+	// dashboard tile - it must not mix into the applicable image-update count.
+	const newer = (id: string) => ({ containerId: id, newerVersion: { tag: 'v2.0.0', bump: 'major' } });
+	const upd = (id: string) => ({ containerId: id, hasImageUpdate: true, newerVersion: null });
+	const plain = (id: string) => ({ containerId: id });
+
+	test('counts only rows carrying a newerVersion blob', () => {
+		expect(countLiveNewerVersion([newer('a'), upd('b'), plain('c')], ['a', 'b', 'c'])).toBe(1);
+		expect(countNewerVersion([newer('a'), upd('b'), plain('c')])).toBe(1);
+	});
+
+	test('a near miss: an applicable image update with no newerVersion is NOT counted', () => {
+		expect(countLiveNewerVersion([upd('a')], ['a'])).toBe(0);
+		expect(isNewerVersionRow({ hasImageUpdate: true, newerVersion: null })).toBe(false);
+	});
+
+	test('absent newerVersion is not counted', () => {
+		expect(isNewerVersionRow({})).toBe(false);
+		expect(countNewerVersion([plain('a')])).toBe(0);
+	});
+
+	test('live-match drops a newer-version row whose container is gone', () => {
+		expect(countLiveNewerVersion([newer('a')], [])).toBe(0);
+		expect(countLiveNewerVersion([newer('a')], ['a'])).toBe(1);
 	});
 });

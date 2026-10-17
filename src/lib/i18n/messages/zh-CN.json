@@ -161,6 +161,7 @@
 	"dashboard_containers_unhealthy": "不健康",
 	"dashboard_containers_pending_updates": "待处理更新",
 	"dashboard_containers_pinned_digest": "固定摘要已变更",
+	"dashboard_containers_newer_version": "有更新版本标签",
 	"dashboard_containers_running_title": "运行中的容器",
 	"dashboard_containers_stopped_title": "已停止的容器",
 	"dashboard_containers_paused_title": "已暂停的容器",

@@ -161,6 +161,7 @@
 	"dashboard_containers_unhealthy": "Unhealthy",
 	"dashboard_containers_pending_updates": "Pending updates",
 	"dashboard_containers_pinned_digest": "Pinned digest moved",
+	"dashboard_containers_newer_version": "Newer version tag available",
 	"dashboard_containers_running_title": "Running containers",
 	"dashboard_containers_stopped_title": "Stopped containers",
 	"dashboard_containers_paused_title": "Paused containers",

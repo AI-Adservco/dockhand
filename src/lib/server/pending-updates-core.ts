@@ -129,3 +129,32 @@ export function countPinnedDigest(pending: Array<{ pinnedToDigest?: boolean; con
 	for (const row of pending ?? []) if (isPinnedDigestRow(row)) n++;
 	return n;
 }
+
+/**
+ * A newer-version-tag (semver) suggestion: a higher version tag than the one running.
+ * Advisory and never auto-applied, so it is counted on its OWN tile, separate from the
+ * applicable image-update count. Keyed on the stored `newerVersion` blob being present.
+ */
+export function isNewerVersionRow(row: { newerVersion?: unknown | null; containerId?: string; hasImageUpdate?: boolean }): boolean {
+	return row.newerVersion != null;
+}
+
+/** Live-matched newer-version count (dashboard tile). */
+export function countLiveNewerVersion(
+	pending: Array<{ containerId: string; newerVersion?: unknown | null }>,
+	liveContainerIds: Iterable<string>
+): number {
+	const live = liveContainerIds instanceof Set ? liveContainerIds : new Set(liveContainerIds);
+	let n = 0;
+	for (const row of pending ?? []) {
+		if (row?.containerId && live.has(row.containerId) && isNewerVersionRow(row)) n++;
+	}
+	return n;
+}
+
+/** Newer-version count without live-matching, for a seed before the container list. */
+export function countNewerVersion(pending: Array<{ newerVersion?: unknown | null; containerId?: string; hasImageUpdate?: boolean }>): number {
+	let n = 0;
+	for (const row of pending ?? []) if (isNewerVersionRow(row)) n++;
+	return n;
+}

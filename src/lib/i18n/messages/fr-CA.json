@@ -161,6 +161,7 @@
 	"dashboard_containers_unhealthy": "Défectueux",
 	"dashboard_containers_pending_updates": "Mises à jour en attente",
 	"dashboard_containers_pinned_digest": "Digest épinglé déplacé",
+	"dashboard_containers_newer_version": "Nouvelle version disponible",
 	"dashboard_containers_running_title": "Conteneurs en cours d'exécution",
 	"dashboard_containers_stopped_title": "Conteneurs arrêtés",
 	"dashboard_containers_paused_title": "Conteneurs en pause",

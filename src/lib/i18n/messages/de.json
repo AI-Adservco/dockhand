@@ -161,6 +161,7 @@
 	"dashboard_containers_unhealthy": "Ungesund",
 	"dashboard_containers_pending_updates": "Ausstehende Updates",
 	"dashboard_containers_pinned_digest": "Angehefteter Digest verschoben",
+	"dashboard_containers_newer_version": "Neuere Version verfügbar",
 	"dashboard_containers_running_title": "Laufende Container",
 	"dashboard_containers_stopped_title": "Gestoppte Container",
 	"dashboard_containers_paused_title": "Pausierte Container",

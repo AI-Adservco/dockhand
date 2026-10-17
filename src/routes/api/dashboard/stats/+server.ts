@@ -17,7 +17,7 @@ import {
 	getDiskUsage
 } from '$lib/server/docker';
 import { listComposeStacks } from '$lib/server/stacks';
-import { countLivePending, countImageUpdates, countLivePinnedDigest, countPinnedDigest } from '$lib/server/pending-updates-core';
+import { countLivePending, countImageUpdates, countLivePinnedDigest, countPinnedDigest, countLiveNewerVersion, countNewerVersion } from '$lib/server/pending-updates-core';
 import { getImageDiskUsageTotalSize } from '$lib/server/docker-disk-usage-core';
 import { authorize } from '$lib/server/authorize';
 import { parseLabels } from '$lib/utils/label-colors';
@@ -69,6 +69,7 @@ export interface EnvironmentStats {
 		unhealthy: number;
 		pendingUpdates: number;
 		pinnedDigest: number;
+		newerVersion: number;
 	};
 	images: {
 		total: number;
@@ -187,7 +188,7 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 				labels: parseLabels(env.labels),
 				connectionType: (env.connectionType as 'socket' | 'direct' | 'hawser-standard' | 'hawser-edge') || 'socket',
 				online: false,
-				containers: { total: 0, running: 0, stopped: 0, paused: 0, restarting: 0, unhealthy: 0, pendingUpdates: 0 , pinnedDigest: 0 },
+				containers: { total: 0, running: 0, stopped: 0, paused: 0, restarting: 0, unhealthy: 0, pendingUpdates: 0 , pinnedDigest: 0 , newerVersion: 0 },
 				images: { total: 0, totalSize: 0 },
 				volumes: { total: 0, totalSize: 0 },
 				containersSize: 0,
@@ -322,6 +323,9 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 				envStats.containers.pinnedDigest = containers.length > 0
 					? countLivePinnedDigest(pendingUpdates, containers.map((c: any) => c.id))
 					: countPinnedDigest(pendingUpdates);
+				envStats.containers.newerVersion = containers.length > 0
+					? countLiveNewerVersion(pendingUpdates, containers.map((c: any) => c.id))
+					: countNewerVersion(pendingUpdates);
 
 			} catch (error) {
 				// Convert technical error messages to user-friendly ones
