@@ -1,8 +1,7 @@
 [
   {
     "version": "1.0.54",
-    "date": "",
-    "comingSoon": true,
+    "date": "2026-10-17",
     "changes": [
       { "type": "fix", "text": "a version pattern with four or five parts is no longer refused, and an ignored pattern says why (#1702)" },
       { "type": "fix", "text": "reading pages no longer fails behind an nginx reverse proxy that uses an upstream block (#1707)" },
